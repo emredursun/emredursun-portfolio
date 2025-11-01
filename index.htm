@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emre Dursun - Code Trace Log</title>
+    <!-- Design Concept: The Code Trace. Simulates a vertical scrollable code/system log. High contrast, monospace font, vertical timeline for history. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&display=swap');
+        
+        :root {
+            --bg-dark: #0A0A0A; /* Deep Black */
+            --fg-light: #F0F0F0; /* Off-White Text */
+            --status-ok: #10B981; /* Emerald */
+            --status-focus: #F59E0B; /* Amber */
+            --status-major: #3B82F6; /* Blue */
+            --status-minor: #6366F1; /* Indigo */
+            --status-search: #F97316; /* Orange */ /* New color for search mode */
+        }
+        
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--bg-dark);
+            color: var(--fg-light);
+            line-height: 1.6;
+        }
+
+        .trace-line {
+            padding: 1rem 0;
+            border-bottom: 1px dashed rgba(240, 240, 240, 0.1);
+        }
+
+        .status-tag {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+            transition: all 0.15s ease-in-out;
+        }
+
+        /* Clickable Tag Styles */
+        .gemini-trigger {
+            cursor: pointer;
+        }
+        .gemini-trigger:hover {
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5); /* Amber glow on hover */
+            transform: translateY(-1px);
+        }
+
+
+        /* Color Codes for Trace Log */
+        .status-ok { background-color: var(--status-ok); color: var(--bg-dark); }
+        .status-focus { background-color: var(--status-focus); color: var(--bg-dark); }
+        .status-major { background-color: var(--status-major); color: var(--bg-dark); }
+        .status-minor { color: var(--status-minor); }
+        .status-search { background-color: var(--status-search); color: var(--bg-dark); } /* New status color */
+
+        /* Timeline Connector */
+        .timeline-connector {
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: rgba(240, 240, 240, 0.2);
+        }
+
+        .timeline-point {
+            position: absolute;
+            left: 0.5rem;
+            top: 1rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        .card {
+            background-color: #1A1A1A; /* Slightly lighter background for separation */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+        }
+
+        /* Style for Scrollable Skill Box */
+        .skill-box {
+            max-height: 250px;
+            overflow-y: auto;
+            /* Scrollbar Style for aesthetic */
+            scrollbar-width: thin;
+            scrollbar-color: var(--status-ok) var(--bg-dark);
+        }
+
+        /* Adjustments for print/accessibility */
+        @media print {
+            body { background: white; color: black; }
+            .trace-line { border-bottom-color: #ccc; }
+            .card { background: #eee; border-color: #ccc; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <!-- Header: System Status Block -->
+    <header class="card p-6 rounded-lg mb-8">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+            <div class="mb-4 sm:mb-0">
+                <p class="text-xs text-status-major">USER_ID: EMRE.DURSUN_NL</p>
+                <h1 class="text-3xl font-bold text-status-search mt-1">CODE TRACE 2.0 - AUTOMATION LOG</h1>
+            </div>
+            <div class="text-right">
+                <!-- STATUS: SEARCH_MODE -->
+                <p class="text-sm">STATUS: <span class="status-tag status-search">SEARCH_MODE</span></p>
+                <p class="text-sm mt-1">LOCATION: HOOGKARSPEL, NL</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Grid Layout (2/3 + 1/3) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- [1] Timeline / Professional Experience (2/3 Column) -->
+        <main class="lg:col-span-2 relative pl-8">
+            <h2 class="text-xl font-bold mb-6 text-status-major border-b border-gray-800 pb-2">EXECUTION TRACE LOG (PROFESSIONAL HISTORY)</h2>
+            
+            <!-- Timeline Line -->
+            <div class="timeline-connector"></div>
+
+            <!-- Trace 1: ING Bank Engagement (External via Sogyo, then Direct) - MOST RECENT -->
+            <div class="trace-line relative">
+                <div class="timeline-point bg-status-major"></div>
+                <div class="pl-6">
+                    <div class="flex justify-between items-center mb-1">
+                        <p class="text-lg font-semibold text-status-major">TRACE_01: ING_BANK_ENGAGEMENT</p>
+                        <span class="status-tag bg-status-major/20 text-status-major">COMPLETED</span> 
+                    </div>
+                    <!-- Combined Role Description -->
+                    <p class="text-sm font-light text-gray-400">ROLE: SDET / Test Automation Engineer | Sep 2023 - Sep 2025</p> 
+                    <p class="text-sm font-light text-gray-500 mb-2">COMMIT: International Payments (PSS/True Int.) - Initially via Sogyo</p>
+                    <ul class="text-sm list-none space-y-1 text-fg-light">
+                        <li><span class="status-minor">// METHODOLOGY:</span> Conducted UI, API, and database testing for complex systems.</li>
+                        <li><span class="status-minor">// ACTION:</span> Designed and executed critical automated regression test cases using **Java/Selenium/Rest Assured**.</li>
+                        <li><span class="status-minor">// FRAMEWORK:</span> Contributed to framework scalability and high product quality for payment systems.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Trace 3: TechPro Education (CI/CD Integration) - NEXT RECENT -->
+            <div class="trace-line relative">
+                <div class="timeline-point bg-status-minor"></div>
+                <div class="pl-6">
+                    <div class="flex justify-between items-center mb-1">
+                        <p class="text-lg font-semibold text-status-minor">TRACE_03: TECHPRO_HEALTH</p>
+                        <span class="status-tag bg-status-minor/20 text-status-minor">CI/CD_INIT</span>
+                    </div>
+                    <p class="text-sm font-light text-gray-400">ROLE: QA Automation Engineer (Part-Time) | Jun 2022 - Jun 2023</p>
+                    <p class="text-sm font-light text-gray-500 mb-2">COMMIT: Medunna Health Project</p>
+                    <ul class="text-sm list-none space-y-1 text-fg-light">
+                        <li><span class="status-minor">// METHOD:</span> Developed automation frameworks and executed functional tests.</li>
+                        <li><span class="status-minor">// INTEGRATION:</span> Integrated test suites with **Jenkins** for CI/CD pipeline implementation.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Trace 2: BSG Auto Parts & Nerex Motors (Previous Domain) - OLDEST -->
+            <div class="trace-line relative">
+                <div class="timeline-point bg-status-focus"></div>
+                <div class="pl-6">
+                    <div class="flex justify-between items-center mb-1">
+                        <p class="text-lg font-semibold text-status-focus">TRACE_02: BSG_ECOM</p>
+                        <span class="status-tag bg-status-focus/20 text-status-focus">DOMAIN_SWITCH</span>
+                    </div>
+                    <p class="text-sm font-light text-gray-400">ROLE: Manual Tester & e-Commerce Specialist | Jan 2020 - Jan 2023</p>
+                    <p class="text-sm font-light text-gray-500 mb-2">COMMIT: ERP QA & Sales Optimization</p>
+                    <ul class="text-sm list-none space-y-1 text-fg-light">
+                        <li><span class="status-minor">// VALIDATION:</span> Performed Manual QA for in-house ERP systems.</li>
+                        <li><span class="status-minor">// OUTCOME:</span> Improved product visibility and boosted online sales on e-commerce platforms.</li>
+                    </ul>
+                </div>
+            </div>
+            
+        </main>
+
+        <!-- [2] Data Modules / Skills & Contact (1/3 Column) -->
+        <aside class="lg:col-span-1 space-y-8">
+            
+            <!-- Skill Matrix Module -->
+            <div class="card p-5 rounded-lg">
+                <h3 class="text-lg font-bold mb-4 text-status-major border-b border-gray-800 pb-2">MODULE_STATUS: SKILL_MATRIX</h3>
+                <div class="skill-box space-y-4 pr-2">
+                    <p class="text-sm font-bold text-status-ok">LANGUAGES & CORE FRAMEWORKS</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="status-tag status-ok gemini-trigger" data-skill="JAVA">JAVA (4/5) ✨</span>
+                        <span class="status-tag status-ok gemini-trigger" data-skill="SELENIUM">SELENIUM (5/5) ✨</span>
+                        <span class="status-tag status-focus gemini-trigger" data-skill="PLAYWRIGHT">PLAYWRIGHT (4/5) ✨</span>
+                        <span class="status-tag status-ok gemini-trigger" data-skill="CUCUMBER">CUCUMBER (5/5) ✨</span>
+                        <span class="status-tag status-focus gemini-trigger" data-skill="REST ASSURED">REST ASSURED ✨</span>
+                        <span class="status-tag bg-gray-700 text-fg-light" data-skill="SQL & JDBC">SQL & JDBC</span>
+                        <span class="status-tag bg-gray-700 text-fg-light gemini-trigger" data-skill="TYPESCRIPT">TYPESCRIPT (4/5) ✨</span>
+                        <span class="status-tag bg-gray-700 text-fg-light" data-skill="JAVASCRIPT">JAVASCRIPT (3/5)</span>
+                    </div>
+
+                    <p class="text-sm font-bold text-status-focus pt-2">CI/CD & DEVOPS ASSETS</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="status-tag status-focus gemini-trigger" data-skill="JENKINS">JENKINS ✨</span>
+                        <span class="status-tag status-focus gemini-trigger" data-skill="MICROSOFT AZURE">MICROSOFT AZURE ✨</span>
+                        <span class="status-tag bg-gray-700 text-fg-light gemini-trigger" data-skill="DOCKER">DOCKER ✨</span>
+                        <span class="status-tag bg-gray-700 text-fg-light gemini-trigger" data-skill="KIBANA / GRAFANA">KIBANA / GRAFANA ✨</span>
+                    </div>
+
+                    <p class="text-sm font-bold text-status-minor pt-2">TEST METHODOLOGY & TOOLS</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="status-tag status-minor bg-status-minor/20" data-skill="AGILE / SCRUM">AGILE / SCRUM</span>
+                        <span class="status-tag status-minor bg-status-minor/20" data-skill="BDD FRAMEWORKS">BDD FRAMEWORKS</span>
+                        <span class="status-tag status-minor bg-status-minor/20" data-skill="DATA-DRIVEN">DATA-DRIVEN</span>
+                        <span class="status-tag bg-gray-700 text-fg-light" data-skill="POSTMAN / SWAGGER">POSTMAN / SWAGGER</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Analysis Module -->
+            <div class="card p-5 rounded-lg">
+                <h3 class="text-lg font-bold mb-4 text-status-major border-b border-gray-800 pb-2">MODULE_STATUS: AI_ANALYSIS_PORT ✨</h3>
+                <div id="ai-output" class="text-sm space-y-2 min-h-20">
+                    <p class="text-gray-500">// Click any skill tag with (✨) above (e.g., **PLAYWRIGHT**) to trigger a deep-dive explanation by the AI Architect.</p>
+                </div>
+                <div id="ai-loading" class="hidden text-sm text-status-focus mt-2">
+                    <span class="animate-pulse">Loading AI Trace... Please wait.</span>
+                </div>
+            </div>
+
+            <!-- INTERVIEW SIMULATION Module -->
+            <div class="card p-5 rounded-lg">
+                <h3 class="text-lg font-bold mb-4 text-status-major border-b border-gray-800 pb-2">MODULE_STATUS: INTERVIEW_SIMULATION ✨</h3>
+                <button id="generate-question-btn" class="w-full status-tag status-major text-fg-light hover:bg-blue-600 transition p-2 text-sm">
+                    <span id="question-button-text">GENERATE DIAGNOSTIC QUESTION</span>
+                </button>
+                <div id="interview-output" class="text-sm space-y-2 mt-4 min-h-20">
+                    <p class="text-gray-500">// Press the button to generate a technical SDET question based on the portfolio's **EXECUTION TRACE LOG**.</p>
+                </div>
+            </div>
+            
+            <!-- NEW: Certificate Trace Module -->
+            <div class="card p-5 rounded-lg">
+                <h3 class="text-lg font-bold mb-4 text-status-ok border-b border-gray-800 pb-2">MODULE_STATUS: CERTIFICATE_TRACE</h3>
+                <div class="space-y-3 text-sm">
+                    <p><span class="text-status-ok font-bold">CERT_01:</span> ISTQB Certified Test Automation Engineer (SDET)</p>
+                    <p class="text-xs text-gray-500 pl-4">// Global benchmark for test automation skill.</p>
+                    
+                    <div class="h-px bg-gray-800 my-2"></div>
+                    
+                    <p><span class="text-status-ok font-bold">CERT_02:</span> TechPro: Full-Stack Automation Program</p>
+                    <p class="text-xs text-gray-500 pl-4">// Comprehensive hands-on automation training.</p>
+
+                    <div class="h-px bg-gray-800 my-2"></div>
+                    
+                    <p><span class="text-status-ok font-bold">CERT_03:</span> ING: API Design Course</p>
+                    <p class="text-xs text-gray-500 pl-4">// Specialized training in banking API architecture.</p>
+
+                    <div class="h-px bg-gray-800 my-2"></div>
+                    
+                    <p><span class="text-status-ok font-bold">CERT_04:</span> ING: Java for Engineers</p>
+                    <p class="text-xs text-gray-500 pl-4">// In-house Java proficiency for SDETs.</p>
+                </div>
+            </div>
+
+
+            <!-- Education Module (Renamed from Certifications Module) -->
+            <div class="card p-5 rounded-lg">
+                <h3 class="text-lg font-bold mb-4 text-status-major border-b border-gray-800 pb-2">MODULE_STATUS: EDUCATION_REPORT</h3>
+                <div class="space-y-3 text-sm">
+                    <p><span class="text-status-major font-bold">EDU:</span> Bachelor of Applied Science (Networking)</p>
+                    <p class="text-xs text-gray-500 pl-4">Istanbul University (2007 - 2013)</p>
+                </div>
+            </div>
+            
+            <!-- Contact Module -->
+            <div class="card p-5 rounded-lg">
+                <h3 class="text-lg font-bold mb-4 text-status-major border-b border-gray-800 pb-2">MODULE_STATUS: CONNECTION_PORT</h3>
+                <div class="space-y-3 text-sm">
+                    <!-- AVAILABILITY STATUS -->
+                    <p class="font-bold text-status-search"><span class="status-tag status-search">STATUS_AVAILABLE</span>: Actively seeking new SDET/QA Automation opportunities.</p>
+                    <div class="h-px bg-gray-800 my-2"></div>
+                    <p><span class="text-status-focus font-bold">EMAIL:</span> <a href="mailto:info.emredursun@gmail.com" class="text-status-ok hover:underline">info.emredursun@gmail.com</a></p>
+                    <p><span class="text-status-focus font-bold">PHONE:</span> +31 6 2878 8948 (NL)</p>
+                    <p><span class="text-status-focus font-bold">LINKEDIN:</span> <a href="https://www.linkedin.com/in/emre-dursun-nl/" target="_blank" class="text-status-ok hover:underline">/emre-dursun-nl/</a></p>
+                </div>
+            </div>
+
+        </aside>
+    </div>
+
+    <script type="module">
+        // Mandatory Firebase imports for environment compatibility
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global variables provided by the Canvas environment
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let app, auth, db;
+        
+        // Function to initialize Firebase
+        function initFirebase() {
+            try {
+                if (Object.keys(firebaseConfig).length > 0) {
+                    app = initializeApp(firebaseConfig);
+                    auth = getAuth(app);
+                    db = getFirestore(app);
+
+                    // Attempt authentication
+                    if (initialAuthToken) {
+                        signInWithCustomToken(auth, initialAuthToken).catch(e => console.error("Custom token sign-in failed:", e));
+                    } else {
+                        signInAnonymously(auth).catch(e => console.error("Anonymous sign-in failed:", e));
+                    }
+                }
+            } catch (e) {
+                console.error("Firebase initialization failed:", e);
+            }
+        }
+        
+        initFirebase();
+        
+        const API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent';
+        const MAX_RETRIES = 5;
+
+        // Function for exponential backoff during API calls
+        async function fetchWithRetry(url, options, retries = 0) {
+            try {
+                const response = await fetch(url, options);
+                if (response.status === 429 && retries < MAX_RETRIES) {
+                    const delay = Math.pow(2, retries) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return fetchWithRetry(url, options, retries + 1);
+                }
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response;
+            } catch (error) {
+                if (retries < MAX_RETRIES) {
+                    const delay = Math.pow(2, retries) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return fetchWithRetry(url, options, retries + 1);
+                }
+                throw error;
+            }
+        }
+        
+        // --- FEATURE 1: SKILL DEEP DIVE (Existing) ---
+        async function callGeminiApi(skillName) {
+            const outputDiv = document.getElementById('ai-output');
+            const loadingDiv = document.getElementById('ai-loading');
+            const apiKey = ""; // Canvas provides this dynamically
+
+            outputDiv.innerHTML = `<p class="text-gray-500">// Requesting trace detail for **${skillName}**...</p>`;
+            loadingDiv.classList.remove('hidden');
+
+            const systemPrompt = "Act as a senior Software Development Engineer in Test (SDET) Architect specializing in high-performance, maintainable automation. Your task is to provide a highly technical and concise explanation (1-2 sentences max) of why the user-provided technology is critical for a modern automation framework. Do not use filler phrases.";
+            const userQuery = `Explain the critical importance of ${skillName} in a modern SDET framework in a single, high-impact sentence.`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            try {
+                const response = await fetchWithRetry(`${API_URL}?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'Error: Could not generate analysis.';
+
+                outputDiv.innerHTML = `
+                    <p class="text-status-focus font-bold mb-1">${skillName} - ARCHITECT TRACE:</p>
+                    <p class="text-fg-light">${text}</p>
+                `;
+
+            } catch (error) {
+                console.error('Gemini API call failed:', error);
+                outputDiv.innerHTML = `<p class="text-red-500">// ERROR: Trace failed. API connection lost. Check console for details.</p>`;
+            } finally {
+                loadingDiv.classList.add('hidden');
+            }
+        }
+
+
+        // --- FEATURE 2: INTERVIEW QUESTION GENERATOR (Existing) ---
+
+        // Function to extract Professional History for context
+        function getProfessionalHistory() {
+            const traces = document.querySelectorAll('.trace-line');
+            let history = "Candidate Professional History (Context for Question):\n";
+            traces.forEach((trace, index) => {
+                const role = trace.querySelector('p:nth-child(2)').textContent.trim();
+                const commit = trace.querySelector('p:nth-child(3)').textContent.trim();
+                const details = Array.from(trace.querySelectorAll('li'))
+                                     .map(li => li.textContent.trim())
+                                     .join('; ');
+                history += `\nTrace ${index + 1}: ${role}. ${commit}. Details: ${details}`;
+            });
+            return history;
+        }
+
+        async function generateInterviewQuestion() {
+            const historyContext = getProfessionalHistory();
+            const outputDiv = document.getElementById('interview-output');
+            const button = document.getElementById('generate-question-btn');
+            const buttonText = document.getElementById('question-button-text');
+            const apiKey = ""; // Canvas provides this dynamically
+            
+            // Disable button and show loading
+            button.disabled = true;
+            buttonText.innerHTML = 'Executing Diagnostic...';
+            outputDiv.innerHTML = `<p class="text-gray-500">// Synthesizing scenario...</p>`;
+            
+            const systemPrompt = "Act as a highly experienced Senior Technical Interviewer, specifically focused on test automation for critical systems like banking. You must use the provided professional history as context. Generate one challenging, open-ended question that requires the candidate to demonstrate deep knowledge, architectural thinking, or problem-solving skills related to their specific experience (e.g., CI/CD implementation, API testing for payments, or BDD framework scalability). The question must be concise and direct. Do not include introductory phrases like 'INTERVIEW QUESTION: ' or 'My question is:'.";
+            const userQuery = `Based on this candidate's history, especially their work at ING with payments and full-stack frameworks, generate one challenging technical question: ${historyContext}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+            };
+
+            try {
+                const response = await fetchWithRetry(`${API_URL}?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                let text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'Error: Question generation failed.';
+                
+                outputDiv.innerHTML = `
+                    <p class="text-status-major font-bold mb-1">EVALUATION_MODE: QUESTION_GENERATED</p>
+                    <p class="text-fg-light">${text}</p>
+                `;
+
+            } catch (error) {
+                console.error('Gemini API call failed for question generation:', error);
+                outputDiv.innerHTML = `<p class="text-red-500">// ERROR: Simulation failed. API connection lost.</p>`;
+            } finally {
+                button.disabled = false;
+                buttonText.innerHTML = 'GENERATE DIAGNOSTIC QUESTION';
+            }
+        }
+
+
+        // Setup event listeners for the skill tags and the new button
+        document.addEventListener('DOMContentLoaded', () => {
+            // Listener for Skill Deep Dive (Feature 1)
+            const triggers = document.querySelectorAll('.gemini-trigger');
+            triggers.forEach(trigger => {
+                trigger.classList.add('cursor-pointer'); 
+                trigger.addEventListener('click', () => {
+                    const skill = trigger.dataset.skill;
+                    if (skill) {
+                        callGeminiApi(skill);
+                    }
+                });
+            });
+
+            // Listener for Interview Simulation (Feature 2)
+            document.getElementById('generate-question-btn').addEventListener('click', generateInterviewQuestion);
+        });
+    </script>
+</body>
+</html>
