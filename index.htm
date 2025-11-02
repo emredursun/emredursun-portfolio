@@ -1,22 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Emre Dursun — SDET & Test Automation Engineer</title>
-    <meta name="description"
-          content="Emre Dursun: ISTQB Certified SDET & Test Automation Engineer. I build reliable automation systems and CI/CD test pipelines using Java, Playwright, and REST Assured. Based in the Netherlands."/>
-    <meta name="author" content="Emre Dursun"/>
-
-    <meta property="og:title" content="Emre Dursun — SDET & Test Automation Engineer"/>
-    <meta property="og:description"
-          content="I build reliable automation systems and CI/CD test pipelines that help teams ship faster."/>
-    <meta property="og:type" content="website"/>
-    <meta property="og:url" content="https://emredursun.nl"/>
-    <link rel="canonical" href="https://emredursun.nl"/>
-    <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:creator" content="@trueheartfeltjourney"/>
-
+    <meta name="description" content="Emre Dursun — ISTQB® Certified SDET focused on automation frameworks, CI/CD, API, UI & DB testing. Based in the Netherlands." />
+    <meta name="author" content="Emre Dursun" />
+    <meta property="og:title" content="Emre Dursun — SDET & Test Automation Engineer" />
+    <meta property="og:description" content="I build reliable automation systems and CI/CD test pipelines that help teams ship faster." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://emredursun.nl" />
+    <link rel="canonical" href="https://emredursun.nl" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@trueheartfeltjourney" />
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -35,6 +31,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* ===========================
+           VARIABLES & BASE
+           =========================== */
         :root{
           --bg: #07101a;
           --panel: rgba(255,255,255,0.03);
@@ -45,6 +44,8 @@
           --radius: 14px;
           --maxw: 1120px;
           --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+          /* NEW: Monospace font for Log View */
+          --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
           --ease: cubic-bezier(.2,.9,.2,1);
           color-scheme: dark;
         }
@@ -66,8 +67,12 @@
           justify-content:center;
         }
 
+        /* container */
         .container{max-width:var(--maxw); width:100%;}
 
+        /* ===========================
+           HEADER / NAV
+           =========================== */
         header{
           display:flex;
           align-items:center;
@@ -94,14 +99,19 @@
         nav a.primary{border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--accent)}
         nav a.primary:hover{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041018}
 
+        /* small menu (mobile) */
         .menu-toggle{display:none;border:1px solid rgba(255,255,255,0.03);background:transparent;padding:8px;border-radius:10px;color:var(--muted);cursor:pointer}
 
+        /* ===========================
+           LAYOUT: HERO + SIDEBAR (ASMMETRICAL & STICKY LOG VIEW)
+           =========================== */
         main{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
         .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);box-shadow:0 10px 40px rgba(2,6,23,0.6);transition:transform .22s var(--ease)}
         .card:hover{transform:translateY(-2px)}
 
         .hero h1{font-size:32px;margin:0 0 8px}
         .lead{color:var(--muted);margin:0 0 14px}
+        .cta{display:flex;gap:10px;flex-wrap:wrap}
         .btn{
           display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;font-weight:700;
           cursor:pointer;border:none;text-decoration:none;color:inherit;transition:transform .18s var(--ease), box-shadow .18s var(--ease);
@@ -110,7 +120,16 @@
         .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)}
         .btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(6,182,212,0.08)}
 
-        .profile{display:flex;flex-direction:column;gap:12px}
+        /* profile aside - STICKY CONTEXT PANEL */
+        .profile{
+          display:flex;
+          flex-direction:column;
+          gap:12px;
+          position: sticky; /* Make it stick to the viewport */
+          top: 28px; /* Offset from the top */
+          max-height: calc(100vh - 56px); /* Ensure it fits in the viewport */
+          overflow-y: auto; /* Allow scrolling if content is too long */
+        }
         .photo{
           height:268px;border-radius:12px;background:linear-gradient(180deg,#071426,#04121a);display:flex;align-items:center;justify-content:center;overflow:hidden;
           box-shadow:inset 0 -10px 40px rgba(0,0,0,0.5);
@@ -118,6 +137,7 @@
         .photo img{width:250px;height:250px;border-radius:12px;object-fit:cover}
         .contact-list{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
 
+        /* MODIFIED HOVER EFFECT for contact list links */
         .contact-list a {
             color: var(--muted);
             text-decoration: none;
@@ -129,12 +149,16 @@
         }
         .contact-list a:hover {
             color: #fff;
-            background: rgba(6,182,212,0.1);
+            background: rgba(6,182,212,0.1); /* Brighter accent color on hover */
         }
 
+        /* small label */
         .muted{color:var(--muted)}
         .small{font-size:13px;color:var(--muted)}
 
+        /* ===========================
+           SECTIONS
+           =========================== */
         section{margin-top:18px}
         h2{font-size:16px;margin:0 0 10px}
         .skills{display:flex;flex-wrap:wrap;gap:10px}
@@ -143,73 +167,81 @@
           transition:all .14s var(--ease);
           cursor:pointer;
         }
+        /* MODIFIED HOVER EFFECT for badges */
         .badge:hover{
-          background:rgba(6,182,212,0.1);
+          background:rgba(6,182,212,0.1); /* Accent-based hover color */
           color:var(--accent);
           transform: translateY(-2px);
         }
 
-        .timeline{
-            display:flex;flex-direction:column;gap:12px;
-            position: relative;
+        /* == START: UNIQUE LOG VIEW FONT APPLICATION == */
+        /* Apply monospace to structured content for a "code log" feel */
+        .timeline, .skills, .projects, .certs {
+          font-family: var(--mono);
+        }
+
+        /* Retain sans-serif for main titles, headers, and description text */
+        .timeline h2, .skills h2, .projects h2, .job .desc div:first-child, .project .meta {
+          font-family: var(--sans);
+        }
+
+        /* Adjust sizes for better monospace legibility in log details */
+        .job .desc div:first-child { font-size: 15px; }
+        .job .desc p { font-size: 13px; }
+        .project p { font-size: 13px; }
+        /* == END: UNIQUE LOG VIEW FONT APPLICATION == */
+
+        .timeline{display:flex;flex-direction:column;gap:12px}
+        /* NEW: Log entry separator (dashed line) */
+        .timeline .job + .job {
+            border-top: 1px dashed rgba(255, 255, 255, 0.12);
+            padding-top: 16px;
+            margin-top: 4px;
         }
         .job{
           display:flex;gap:12px;align-items:flex-start;
+          /* ADDED HOVER EFFECT for Professional Experience row */
           transition: all .2s var(--ease);
           padding: 4px 0;
           border-radius: var(--radius);
         }
+        /* MODIFIED HOVER EFFECT for job row */
         .job:hover {
-            background: rgba(6, 182, 212, 0.05);
-            box-shadow: 0 0 15px rgba(6,182,212,0.08);
+            background: rgba(6, 182, 212, 0.05); /* Subtle accent blue highlight */
+            box-shadow: 0 0 15px rgba(6,182,212,0.08); /* Increased shadow for noticeable lift */
         }
         .meta{min-width:150px;color:var(--muted);font-size:13px}
         .job .meta strong{display:block;color:#fff}
         .job .desc{flex:1}
 
-        /* TIMELINE LAYOUT FIX */
+        /* == START: FIX FOR EXPERIENCE SECTION LAYOUT ISSUE (PREVIOUS FIX) == */
+        /* 1. Fix the position of the vertical timeline bar */
         .timeline::before {
             content: '';
             position: absolute;
             width: 2px;
-            background-color: var(--accent); /* FIXED: Used defined variable */
-            top: 0;
-            bottom: 0;
-            left: 38%;
+            background-color: var(--accent); /* Updated color for log view */
+            top: -10px; /* Extended start point */
+            bottom: -10px; /* Extended end point */
+            left: 36%;
         }
+
+        /* 2. Fix the meta column (Date/Company Name) width and alignment */
         .timeline .meta {
-            width: 38%;
+            width: 35%; /* Increased width to prevent text from wrapping and breaking alignment */
             flex-shrink: 0;
             text-align: right;
-            padding-right: 25px;
+            padding-right: 25px; /* Adds necessary space between the text and the vertical bar */
             min-width: unset;
+            position: relative;
         }
+
+        /* 3. Prevent the text inside the meta column (date/company name) from wrapping */
         .timeline .meta * {
             white-space: nowrap;
         }
-        /* Mobile overrides for timeline */
-        @media (max-width: 820px) {
-            .timeline::before {
-                left: 10px;
-            }
-            .timeline .job {
-                flex-direction: column;
-                gap: 4px;
-                padding-left: 20px;
-            }
-            .timeline .meta {
-                width: 100%;
-                text-align: left;
-                padding-right: 0;
-                padding-left: 15px;
-            }
-            .timeline .meta * {
-                white-space: normal;
-            }
-            .timeline .job .desc {
-                padding-left: 15px;
-            }
-        }
+        /* == END: FIX FOR EXPERIENCE SECTION LAYOUT ISSUE == */
+
 
         .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
         .project{
@@ -227,32 +259,37 @@
           transition: transform .22s var(--ease), background .22s var(--ease);
           cursor:pointer;
         }
+        /* MODIFIED HOVER EFFECT for certifications */
         .cert:hover {
-            background: rgba(6,182,212,0.1);
+            background: rgba(6,182,212,0.1); /* Accent-based hover color */
             color: var(--accent);
             transform: translateY(-2px);
         }
 
+        /* testimonials card */
         .testimonials{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
         .quote{
           padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);font-size:14px;color:var(--muted);
           transition: transform .22s var(--ease), box-shadow .22s var(--ease), background .22s var(--ease);
           cursor:pointer;
         }
+        /* MODIFIED HOVER EFFECT for testimonials */
         .quote:hover{
           transform:translateY(-4px);
-          background:linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015));
-          box-shadow:0 12px 30px rgba(6,182,212,0.1);
+          background:linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015)); /* Brighter gradient */
+          box-shadow:0 12px 30px rgba(6,182,212,0.1); /* Stronger shadow */
         }
 
+        /* contact form (progressive enhancement) */
         form.contact{display:flex;flex-direction:column;gap:10px}
         form input, form textarea{
           background:transparent;border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px;color:#e6eef8;font-size:14px;
           resize:none;
           transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
         }
+        /* MODIFIED HOVER EFFECT for form fields */
         form input:hover, form textarea:hover {
-            border-color: var(--accent);
+            border-color: var(--accent); /* Changes border to the accent color */
             box-shadow: 0 0 10px rgba(6,182,212,0.2);
         }
         form input::placeholder, form textarea::placeholder{color:rgba(230,238,248,0.45)}
@@ -261,6 +298,9 @@
 
         footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px;padding-bottom:18px}
 
+        /* ===========================
+           ANIMATIONS (simple)
+           =========================== */
         .fade-in{opacity:0;transform:translateY(8px);animation:fadeIn .6s forwards var(--ease)}
         .stagger > *{opacity:0;transform:translateY(8px)}
         .stagger > *:nth-child(1){animation:staggerIn .5s .08s forwards}
@@ -270,6 +310,7 @@
         @keyframes fadeIn{to{opacity:1;transform:none}}
         @keyframes staggerIn{to{opacity:1;transform:none}}
 
+        /* responsive */
         @media (max-width:1000px){
           main{grid-template-columns:1fr 320px}
           .projects{grid-template-columns:repeat(2,1fr)}
@@ -282,12 +323,19 @@
           main{grid-template-columns:1fr;gap:18px}
           .projects{grid-template-columns:1fr}
           .photo{height:268px}
+          /* NEW RULE: Disable sticky sidebar on mobile */
+          .profile {
+            position: static;
+            max-height: none;
+            overflow-y: visible;
+          }
         }
         @media (max-width:420px){
           .hero h1{font-size:22px}
           .logo{width:48px;height:48px}
         }
 
+        /* accessibility focus */
         a:focus, button:focus, input:focus, textarea:focus { outline: 3px solid rgba(6,182,212,0.14); outline-offset:3px; }
     </style>
 </head>
@@ -317,20 +365,18 @@
             <section class="card" aria-labelledby="hero-title">
                 <div class="hero-content stagger">
                     <h1 id="hero-title">I build reliable automation systems that help teams ship faster</h1>
-                    <p class="lead">ISTQB® Certified Test Automation Engineer (SDET) with experience in UI, API, and
-                        database
+                    <p class="lead">ISTQB® Certified Test Automation Engineer (SDET) with experience in UI, API, and database
                         testing using Java, Selenium, Cucumber, Postman, and Rest Assured. Skilled in designing
                         scalable automation frameworks and integrating them with CI/CD pipelines. Proven track
                         record of contributing to high-quality releases in Agile teams across banking,
                         healthcare, and e-commerce domains. Fluent in English and Turkish (native),</p>
 
-                    <div style="display:flex;gap:12px;align-items:center" class="fade-in">
+                    <div style="display:flex;gap:12px;align-items:center" class="fade-in" >
                         <a class="btn primary" href="#projects">See My Work</a>
                         <a class="btn ghost" href="mailto:info.emredursun@gmail.com">Contact Me</a>
                     </div>
 
-                    <div aria-hidden="true"
-                         style="margin-top:12px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;font-size:13px;color:var(--muted);background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;display:inline-block">
+                    <div aria-hidden="true" style="margin-top:12px;font-family:var(--mono);font-size:13px;color:var(--muted);background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;display:inline-block">
                         <span id="console">> running: load-frameworks --success ✓</span>
                     </div>
                 </div>
@@ -338,12 +384,8 @@
 
             <section id="about" class="card fade-in">
                 <h2>About</h2>
-                <p class="muted">Driven by precision, powered by curiosity. I transform manual testing corridors into
-                    automated, repeatable systems so teams have clear feedback and confidence to ship.</p>
-                <p style="margin-top:10px">I’ve worked across banking and e-commerce domains building API & UI
-                    automation, resilient test pipelines, and observability to help teams scale testing without slowing
-                    delivery. I enjoy breaking complex flows into simple, testable parts and collaborating
-                    cross-functionally to reduce risk.</p>
+                <p class="muted">Driven by precision, powered by curiosity. I transform manual testing corridors into automated, repeatable systems so teams have clear feedback and confidence to ship.</p>
+                <p style="margin-top:10px">I’ve worked across banking and e-commerce domains building API & UI automation, resilient test pipelines, and observability to help teams scale testing without slowing delivery. I enjoy breaking complex flows into simple, testable parts and collaborating cross-functionally to reduce risk.</p>
             </section>
 
             <section id="skills" class="card fade-in">
@@ -375,10 +417,7 @@
                         <div class="desc">
                             <div style="font-weight:700">Test Automation Engineer (International Payments)</div>
                             <div class="small muted" style="margin-bottom:4px">Amsterdam/Utrecht, Netherlands</div>
-                            <p class="muted" style="margin:0 0 4px;font-size:14px">Developed and maintained automation
-                                test frameworks for payment systems. Executed functional and regression test cases, and
-                                collaborated with BAS/stakeholders to ensure product quality in an Agile
-                                environment.</p>
+                            <p class="muted" style="margin:0 0 4px;font-size:14px">Developed and maintained automation test frameworks for payment systems. Executed functional and regression test cases, and collaborated with BAS/stakeholders to ensure product quality in an Agile environment.</p>
                         </div>
                     </div>
 
@@ -390,9 +429,7 @@
                         <div class="desc">
                             <div style="font-weight:700">QA Automation Engineer (Part-Time)</div>
                             <div class="small muted" style="margin-bottom:4px">Remote</div>
-                            <p class="muted" style="margin:0 0 4px;font-size:14px">Developed and managed automation
-                                frameworks for the Medunna Health Project. Integrated test suites with Jenkins for CI/CD
-                                implementation and executed functional/regression tests.</p>
+                            <p class="muted" style="margin:0 0 4px;font-size:14px">Developed and managed automation frameworks for the Medunna Health Project. Integrated test suites with Jenkins for CI/CD implementation and executed functional/regression tests.</p>
                         </div>
                     </div>
 
@@ -404,9 +441,7 @@
                         <div class="desc">
                             <div style="font-weight:700">Manual Tester & e-Commerce Specialist</div>
                             <div class="small muted" style="margin-bottom:4px">Amsterdam, Netherlands</div>
-                            <p class="muted" style="margin:0 0 4px;font-size:14px">Conducted manual testing for in-house
-                                ERP systems. Additionally, improved product search visibility and boosted online sales
-                                through e-commerce optimization.</p>
+                            <p class="muted" style="margin:0 0 4px;font-size:14px">Conducted manual testing for in-house ERP systems. Additionally, improved product search visibility and boosted online sales through e-commerce strategy on platforms like Amazon and eBay.</p>
                         </div>
                     </div>
 
@@ -418,29 +453,20 @@
                 <div class="projects" style="margin-top:12px">
                     <article class="project" aria-labelledby="p1">
                         <div id="p1" class="meta">Payment Automation Framework — ING</div>
-                        <p>Modular API & UI test suites (REST Assured + Playwright) integrated into CI. Result: reduced
-                            regression time by improving test reliability and parallelization.</p>
-                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Java · REST Assured ·
-                            Playwright · Jenkins
-                        </div>
+                        <p>Modular API & UI test suites (REST Assured + Playwright) integrated into CI. Result: reduced regression time by improving test reliability and parallelization.</p>
+                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Java · REST Assured · Playwright · Jenkins</div>
                     </article>
 
                     <article class="project" aria-labelledby="p2">
                         <div id="p2" class="meta">E-commerce Playwright Suite</div>
-                        <p>Cross-browser Playwright architecture handling complex checkout flows and multi-locale
-                            scenarios with containerized runners.</p>
-                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Playwright · TypeScript ·
-                            Docker
-                        </div>
+                        <p>Cross-browser Playwright architecture handling complex checkout flows and multi-locale scenarios with containerized runners.</p>
+                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Playwright · TypeScript · Docker</div>
                     </article>
 
                     <article class="project" aria-labelledby="p3">
                         <div id="p3" class="meta">CI/CD Test Pipeline</div>
-                        <p>End-to-end test orchestration in Azure DevOps/Jenkins enabling fast feedback on merges and
-                            protected releases.</p>
-                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Azure DevOps · Jenkins ·
-                            Docker
-                        </div>
+                        <p>End-to-end test orchestration in Azure DevOps/Jenkins enabling fast feedback on merges and protected releases.</p>
+                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Azure DevOps · Jenkins · Docker</div>
                     </article>
                 </div>
             </section>
@@ -458,14 +484,8 @@
                 <div style="margin-top:14px">
                     <h2 style="margin-top:16px">Testimonials</h2>
                     <div class="testimonials" style="margin-top:10px">
-                        <div class="quote">“Emre increased our test reliability and made regression runs predictable — a
-                            huge help to the delivery cycle.”
-                            <div class="small muted" style="margin-top:8px">— Colleague at ING</div>
-                        </div>
-                        <div class="quote">“Practical, reliable, and clear. Brought automation to parts of the product
-                            we thought were hard to cover.”
-                            <div class="small muted" style="margin-top:8px">— Product Manager</div>
-                        </div>
+                        <div class="quote">“Emre increased our test reliability and made regression runs predictable — a huge help to the delivery cycle.” <div class="small muted" style="margin-top:8px">— Colleague at ING</div></div>
+                        <div class="quote">“Practical, reliable, and clear. Brought automation to parts of the product we thought were hard to cover.” <div class="small muted" style="margin-top:8px">— Product Manager</div></div>
                     </div>
                 </div>
             </section>
@@ -477,8 +497,7 @@
 
         <aside class="profile card" aria-label="Profile card">
             <div class="photo" role="img" aria-label="Emre Dursun headshot">
-                <img src="https://media.licdn.com/dms/image/v2/D4D03AQHlu0evgEIp-A/profile-displayphoto-scale_200_200/B4DZhYUPh9HwAY-/0/1753828359776?e=1763596800&v=beta&t=Q7gf4fZrUPst920vFbjsybkOaIWk2TSXGzFMvbPomK0"
-                     alt="Emre Dursun headshot"/>
+                <img src="https://media.licdn.com/dms/image/v2/D4D03AQHlu0evgEIp-A/profile-displayphoto-scale_200_200/B4DZhYUPh9HwAY-/0/1753828359776?e=1763596800&v=beta&t=Q7gf4fZrUPst920vFbjsybkOaIWk2TSXGzFMvbPomK0" alt="Emre Dursun headshot" />
             </div>
 
             <div style="font-weight:800">Emre Dursun</div>
@@ -486,16 +505,13 @@
 
             <div class="contact-list">
                 <div>📍 Netherlands</div>
-                <div>✉️ <a href="mailto:info.emredursun@gmail.com" style="color:var(--accent);text-decoration:none">info.emredursun@gmail.com</a>
-                </div>
-                <div>🔗 <a href="https://www.linkedin.com/in/emre-dursun-nl" target="_blank" rel="noopener"
-                          style="color:var(--muted)">LinkedIn</a></div>
+                <div>✉️ <a href="mailto:info.emredursun@gmail.com" style="color:var(--accent);text-decoration:none">info.emredursun@gmail.com</a></div>
+                <div>🔗 <a href="https://www.linkedin.com/in/emre-dursun-nl" target="_blank" rel="noopener" style="color:var(--muted)">LinkedIn</a></div>
                 <div class="small muted">Phone: +31 6 2878 8948</div>
             </div>
 
             <div style="display:flex;gap:8px;margin-top:10px">
-                <a class="btn ghost" href="#experience"
-                   onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">Resume</a>
+                <a class="btn ghost" href="#experience" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">Resume</a>
                 <a class="btn ghost" href="/CV.pdf" target="_blank">Download CV</a>
             </div>
 
@@ -503,28 +519,22 @@
 
             <div>
                 <h2 style="margin:0 0 8px">Let's Connect</h2>
-                <p class="muted" style="margin:0 0 10px">Open to new roles, contract work, and collaborations in
-                    automation, QA strategy, and test engineering.</p>
+                <p class="muted" style="margin:0 0 10px">Open to new roles, contract work, and collaborations in automation, QA strategy, and test engineering.</p>
 
                 <form id="contactForm" class="contact" onsubmit="handleContact(event)">
                     <div class="form-row">
-                        <input id="name" name="name" type="text" placeholder="Your name" required
-                               aria-label="Your name"/>
+                        <input id="name" name="name" type="text" placeholder="Your name" required aria-label="Your name" />
                     </div>
                     <div class="form-row">
-                        <input id="email" name="email" type="email" placeholder="Your email" required
-                               aria-label="Your email"/>
+                        <input id="email" name="email" type="email" placeholder="Your email" required aria-label="Your email" />
                     </div>
                     <div>
-                        <textarea id="message" name="message" rows="4" placeholder="Short message" required
-                                  aria-label="Message"></textarea>
+                        <textarea id="message" name="message" rows="4" placeholder="Short message" required aria-label="Message"></textarea>
                     </div>
 
                     <div style="display:flex;gap:8px">
                         <button type="submit" class="btn primary">Send message</button>
-                        <a class="btn ghost"
-                           href="mailto:info.emredursun@gmail.com?subject=Contact%20from%20Website&body=Hi%20Emre%2C%0A%0A"
-                           target="_blank">Email</a>
+                        <a class="btn ghost" href="mailto:info.emredursun@gmail.com?subject=Contact%20from%20Website&body=Hi%20Emre%2C%0A%0A" target="_blank">Email</a>
                     </div>
 
                     <div id="formResult" class="small muted" style="margin-top:8px"></div>
@@ -535,6 +545,7 @@
 </div>
 
 <script>
+    // Console typing animation (purely visual)
     (function(){
       const consoleEl = document.getElementById('console');
       const messages = [
@@ -551,6 +562,7 @@
       }, 3000);
     })();
 
+    // Mobile menu toggle (simple)
     const menuBtn = document.getElementById('menuBtn');
     menuBtn && menuBtn.addEventListener('click', function(){
       const nav = document.querySelector('nav');
@@ -559,6 +571,7 @@
       this.setAttribute('aria-expanded', open);
     });
 
+    // Contact form: progressive enhancement
     async function handleContact(e){
       e.preventDefault();
       const name = document.getElementById('name').value.trim();
@@ -566,7 +579,9 @@
       const message = document.getElementById('message').value.trim();
       const resultEl = document.getElementById('formResult');
 
-      const endpoint = '';
+      // Attempt to POST to a serverless endpoint (replace URL when you have one).
+      // If it fails (no backend), fallback to mailto to preserve functionality.
+      const endpoint = ''; // <-- optionally add your serverless endpoint (Netlify functions, Vercel, Formspree, etc.)
       if(endpoint){
         try {
           const res = await fetch(endpoint, {
@@ -585,14 +600,17 @@
         }
       }
 
-      const mailto = `mailto:info.emredursun@gmail.com?subject=${encodeURIComponent('Website contact: '+name)}&body=${encodeURIComponent('Name: '+name+'\\nEmail: '+email+'\\n\\n'+message)}`;
+      // mailto fallback
+      const mailto = `mailto:info.emredursun@gmail.com?subject=${encodeURIComponent('Website contact: '+name)}&body=${encodeURIComponent('Name: '+name+'\nEmail: '+email+'\n\n'+message)}`;
       window.location.href = mailto;
     }
 
+    // Entrance animations: add fade-in classes when DOM is ready
     document.addEventListener('DOMContentLoaded', ()=> {
       document.querySelectorAll('.fade-in').forEach((el, idx) => {
         el.style.animation = `fadeIn .6s ${idx*0.06}s forwards`;
       });
+      // quick stagger for hero
       document.querySelectorAll('.stagger > *').forEach((n,i) => {
         n.style.animation = `staggerIn .5s ${i*0.08}s forwards`;
       });
