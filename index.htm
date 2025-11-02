@@ -1,304 +1,1134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emre Dursun - Code Trace Log</title>
-    <!-- Design Concept: The Code Trace. Simulates a vertical scrollable code/system log. High contrast, monospace font, vertical timeline for history. -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Emre Dursun — SDET & Test Automation Engineer</title>
+    <meta name="description" content="Emre Dursun — ISTQB® Certified SDET focused on automation frameworks, CI/CD, API, UI & DB testing. Based in the Netherlands." />
+    <meta name="author" content="Emre Dursun" />
+    <!-- Open Graph -->
+    <meta property="og:title" content="Emre Dursun — SDET & Test Automation Engineer" />
+    <meta property="og:description" content="I build reliable automation systems and CI/CD test pipelines that help teams ship faster." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://emredursun.nl" />
+    <link rel="canonical" href="https://emredursun.nl" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@trueheartfeltjourney" />
+    <!-- Structured Data (Person) -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Emre Dursun",
+            "jobTitle": "Test Automation Engineer (SDET)",
+            "url": "https://emredursun.nl",
+            "sameAs": [
+                "https://www.linkedin.com/in/emre-dursun-nl",
+                "https://www.tiktok.com/@goforheartfeltjou"
+            ],
+            "description": "ISTQB® Certified SDET focused on automation frameworks, CI/CD, API & UI testing."
+        }
+    </script>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;600;700&display=swap');
-        
-        :root {
-            --bg-dark: #0A0A0A; /* Deep Black */
-            --fg-light: #F0F0F0; /* Off-White Text */
-            --status-ok: #10B981; /* Emerald */
-            --status-focus: #F59E0B; /* Amber */
-            --status-major: #3B82F6; /* Blue */
-            --status-minor: #6366F1; /* Indigo */
-            --status-search: #F97316; /* Orange */
+        /* ===========================
+           VARIABLES & BASE
+           =========================== */
+        :root{
+          --bg: #07101a;
+          --panel: rgba(255,255,255,0.03);
+          --muted: #98a0b3;
+          --accent: #06b6d4;
+          --accent-2: #f6a03d;
+          --glass: rgba(255,255,255,0.04);
+          --radius: 14px;
+          --maxw: 1120px;
+          --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+          --ease: cubic-bezier(.2,.9,.2,1);
+          color-scheme: dark;
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%}
+        body{
+          margin:0;
+          font-family:var(--sans);
+          background:
+            radial-gradient(1200px 600px at 10% 10%, rgba(6,182,212,0.035), transparent 6%),
+            radial-gradient(800px 400px at 95% 90%, rgba(246,160,61,0.02), transparent 6%),
+            linear-gradient(180deg,var(--bg) 0%, #04121a 100%);
+          color:#e6eef8;
+          -webkit-font-smoothing:antialiased;
+          -moz-osx-font-smoothing:grayscale;
+          line-height:1.5;
+          padding:28px 18px;
+          display:flex;
+          justify-content:center;
         }
 
-        body {
-            font-family: 'Roboto Mono', monospace;
-            background-color: var(--bg-dark);
-            color: var(--fg-light);
-            line-height: 1.6;
+        /* container */
+        .container{max-width:var(--maxw); width:100%;}
+
+        /* ===========================
+           HEADER / NAV
+           =========================== */
+        header{
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          gap:18px;
+          margin-bottom:26px;
         }
 
-        .trace-line {
-            padding: 1rem 0;
-            border-bottom: 1px dashed rgba(240, 240, 240, 0.1);
+        .brand{display:flex;gap:12px;align-items:center}
+        .logo{
+          width:56px;height:56px;border-radius:12px;
+          background:linear-gradient(135deg,var(--accent),var(--accent-2));
+          display:flex;align-items:center;justify-content:center;font-weight:800;color:#041018;
+          box-shadow:0 6px 20px rgba(6,182,212,0.08), inset 0 -6px 20px rgba(255,255,255,0.02);
+          font-family:var(--sans);
         }
+        .brand .title{line-height:1}
+        .brand .title .name{font-weight:800;font-size:16px}
+        .brand .title .role{color:var(--muted);font-size:13px;margin-top:2px}
 
-        .status-tag {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
+        nav{display:flex;gap:12px;align-items:center}
+        nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:9px;font-weight:600;transition:all .18s var(--ease)}
+        nav a:hover{color:#fff;background:rgba(255,255,255,0.03)}
+        nav a.primary{border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--accent)}
+        nav a.primary:hover{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041018}
+
+        /* small menu (mobile) */
+        .menu-toggle{display:none;border:1px solid rgba(255,255,255,0.03);background:transparent;padding:8px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+        /* ===========================
+           LAYOUT: HERO + SIDEBAR
+           =========================== */
+        main{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+        .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);box-shadow:0 10px 40px rgba(2,6,23,0.6);transition:transform .22s var(--ease)}
+        .card:hover{transform:translateY(-2px)}
+
+        .hero h1{font-size:32px;margin:0 0 8px}
+        .lead{color:var(--muted);margin:0 0 14px}
+        .cta{display:flex;gap:10px;flex-wrap:wrap}
+        .btn{
+          display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;font-weight:700;
+          cursor:pointer;border:none;text-decoration:none;color:inherit;transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+        }
+        .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071018}
+        .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)}
+        .btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(6,182,212,0.08)}
+
+        /* profile aside */
+        .profile{display:flex;flex-direction:column;gap:12px}
+        .photo{
+          height:168px;border-radius:12px;background:linear-gradient(180deg,#071426,#04121a);display:flex;align-items:center;justify-content:center;overflow:hidden;
+          box-shadow:inset 0 -10px 40px rgba(0,0,0,0.5);
+        }
+        .photo img{width:128px;height:128px;border-radius:12px;object-fit:cover}
+        .contact-list{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+
+        /* MODIFIED HOVER EFFECT for contact list links */
+        .contact-list a {
+            color: var(--muted);
+            text-decoration: none;
+            display: block;
+            padding: 2px 4px;
+            margin: -2px -4px;
             border-radius: 4px;
-            font-weight: 700;
-            user-select: none;
+            transition: background .2s var(--ease);
+        }
+        .contact-list a:hover {
+            color: #fff;
+            background: rgba(6,182,212,0.1); /* Brighter accent color on hover */
         }
 
-        /* Color Codes for Trace Log */
-        .status-ok { background-color: var(--status-ok); color: var(--bg-dark); }
-        .status-focus { background-color: var(--status-focus); color: var(--bg-dark); }
-        .status-major { background-color: var(--status-major); color: var(--bg-dark); }
-        .status-minor { color: var(--status-minor); }
-        .status-search { background-color: var(--status-search); color: var(--bg-dark); }
+        /* small label */
+        .muted{color:var(--muted)}
+        .small{font-size:13px;color:var(--muted)}
 
-        /* Timeline Connector */
-        .timeline-connector {
+        /* ===========================
+           SECTIONS
+           =========================== */
+        section{margin-top:18px}
+        h2{font-size:16px;margin:0 0 10px}
+        .skills{display:flex;flex-wrap:wrap;gap:10px}
+        .badge{
+          padding:8px 10px;border-radius:8px;background:var(--glass);font-weight:700;color:var(--muted);font-size:13px;
+          transition:all .14s var(--ease);
+          cursor:pointer;
+        }
+        /* MODIFIED HOVER EFFECT for badges */
+        .badge:hover{
+          background:rgba(6,182,212,0.1); /* Accent-based hover color */
+          color:var(--accent);
+          transform: translateY(-2px);
+        }
+
+        .timeline{display:flex;flex-direction:column;gap:12px}
+        .job{
+          display:flex;gap:12px;align-items:flex-start;
+          /* ADDED HOVER EFFECT for Professional Experience row */
+          transition: all .2s var(--ease);
+          padding: 4px 0;
+          border-radius: var(--radius);
+        }
+        /* MODIFIED HOVER EFFECT for job row */
+        .job:hover {
+            background: rgba(6, 182, 212, 0.05); /* Subtle accent blue highlight */
+            box-shadow: 0 0 15px rgba(6,182,212,0.08); /* Increased shadow for noticeable lift */
+        }
+        .meta{min-width:150px;color:var(--muted);font-size:13px}
+        .job .meta strong{display:block;color:#fff}
+        .job .desc{flex:1}
+
+        /* == START: FIX FOR EXPERIENCE SECTION LAYOUT ISSUE (PREVIOUS FIX) == */
+        /* 1. Fix the position of the vertical timeline bar */
+        .timeline::before {
+            content: '';
             position: absolute;
-            left: 1rem;
+            width: 2px;
+            background-color: var(--color-primary);
             top: 0;
             bottom: 0;
-            width: 2px;
-            background-color: rgba(240, 240, 240, 0.2);
+            left: 36%; /* CORRECTION: Increased left position to align with the new meta column width */
         }
 
-        .timeline-point {
-            position: absolute;
-            left: 0.5rem;
-            top: 1rem;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            z-index: 10;
+        /* 2. Fix the meta column (Date/Company Name) width and alignment */
+        .timeline .meta {
+            width: 35%; /* Increased width to prevent text from wrapping and breaking alignment */
+            flex-shrink: 0;
+            text-align: right;
+            padding-right: 25px; /* Adds necessary space between the text and the vertical bar */
+            min-width: unset;
+            position: relative;
         }
 
-        .card {
-            background-color: #1A1A1A; /* Slightly lighter background for separation */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.1);
+        /* 3. Prevent the text inside the meta column (date/company name) from wrapping */
+        .timeline .meta * {
+            white-space: nowrap;
+        }
+        /* == END: FIX FOR EXPERIENCE SECTION LAYOUT ISSUE == */
+
+
+        .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+        .project{
+          padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.015),rgba(255,255,255,0.01));
+          cursor:pointer;transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+          display:flex;flex-direction:column;gap:8px;
+        }
+        .project:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(6,182,212,0.08)}
+        .project .meta{font-weight:700;font-size:13px}
+        .project p{margin:0;color:var(--muted);font-size:14px}
+
+        .certs{display:flex;flex-wrap:wrap;gap:8px}
+        .cert{
+          background:var(--glass);padding:10px;border-radius:8px;font-size:13px;color:var(--muted);
+          transition: transform .22s var(--ease), background .22s var(--ease);
+          cursor:pointer;
+        }
+        /* MODIFIED HOVER EFFECT for certifications */
+        .cert:hover {
+            background: rgba(6,182,212,0.1); /* Accent-based hover color */
+            color: var(--accent);
+            transform: translateY(-2px);
         }
 
-        /* Style for Scrollable Skill Box */
-        .skill-box {
-            max-height: 250px;
-            overflow-y: auto;
-            /* Scrollbar Style for aesthetic */
-            scrollbar-width: thin;
-            scrollbar-color: var(--status-ok) var(--bg-dark);
+        /* testimonials card */
+        .testimonials{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+        .quote{
+          padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);font-size:14px;color:var(--muted);
+          transition: transform .22s var(--ease), box-shadow .22s var(--ease), background .22s var(--ease);
+          cursor:pointer;
+        }
+        /* MODIFIED HOVER EFFECT for testimonials */
+        .quote:hover{
+          transform:translateY(-4px);
+          background:linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015)); /* Brighter gradient */
+          box-shadow:0 12px 30px rgba(6,182,212,0.1); /* Stronger shadow */
         }
 
-        /* Adjustments for print/accessibility */
-        @media print {
-            body { background: white; color: black; }
-            .trace-line { border-bottom-color: #ccc; }
-            .card { background: #eee; border-color: #ccc; box-shadow: none; }
+        /* contact form (progressive enhancement) */
+        form.contact{display:flex;flex-direction:column;gap:10px}
+        form input, form textarea{
+          background:transparent;border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px;color:#e6eef8;font-size:14px;
+          resize:none;
+          transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
         }
-    </style>
-</head>
-<body class="p-4 sm:p-8">
-
-<!-- Header: System Status Block -->
-<header class="card p-6 rounded-lg mb-8">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-        <div class="mb-4 sm:mb-0">
-            <p class="text-xs text-status-major">USER_ID: EMRE.DURSUN</p>
-            <h1 class="text-3xl font-bold text-status-search mt-1">CODE TRACE 2.0 - AUTOMATION LOG</h1>
-        </div>
-        <div class="text-right">
-            <!-- STATUS: SEARCH_MODE -->
-            <p class="text-sm">STATUS: <span class="status-tag status-search">SEARCH_MODE</span></p>
-            <p class="text-sm mt-1">LOCATION: HOOGKARSPEL, NL</p>
-        </div>
-    </div>
-</header>
-
-<!-- Main Grid Layout (2/3 + 1/3) -->
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-    <!-- [1] Timeline / Professional Experience (2/3 Column) -->
-    <main class="lg:col-span-2 relative pl-8">
-        <h2 class="text-xl font-bold mb-6 text-status-major border-b border-gray-800 pb-2">EXECUTION TRACE LOG (PROFESSIONAL HISTORY)</h2>
-
-        <!-- Timeline Line -->
-        <div class="timeline-connector"></div>
-
-        <!-- Trace 1: ING Bank Engagement (External via Sogyo, then Direct) - MOST RECENT -->
-        <div class="trace-line relative">
-            <div class="timeline-point bg-status-major"></div>
-            <div class="pl-6">
-                <div class="flex justify-between items-center mb-1">
-                    <p class="text-lg font-semibold text-status-major">TRACE_01: ING_BANK_ENGAGEMENT</p>
-                    <span class="status-tag bg-status-major/20 text-status-major">COMPLETED</span>
-                </div>
-                <!-- Combined Role Description -->
-                <p class="text-sm font-light text-gray-400">ROLE: SDET / Test Automation Engineer | Sep 2023 - Sep 2025</p>
-                <p class="text-sm font-light text-gray-500 mb-2">COMMIT: International Payments (PSS/True Int.) - Initially via Sogyo</p>
-                <ul class="text-sm list-none space-y-1 text-fg-light">
-                    <li><span class="status-minor">// METHODOLOGY:</span> Conducted UI, API, and database testing for complex systems.</li>
-                    <li><span class="status-minor">// ACTION:</span> Designed and executed critical automated regression test cases using **Java/Selenium/Rest Assured**.</li>
-                    <li><span class="status-minor">// FRAMEWORK:</span> Contributed to framework scalability and high product quality for payment systems.</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Trace 3: TechPro Education (CI/CD Integration) - NEXT RECENT -->
-        <div class="trace-line relative">
-            <div class="timeline-point bg-status-minor"></div>
-            <div class="pl-6">
-                <div class="flex justify-between items-center mb-1">
-                    <p class="text-lg font-semibold text-status-minor">TRACE_03: TECHPRO_HEALTH</p>
-                    <span class="status-tag bg-status-minor/20 text-status-minor">CI/CD_INIT</span>
-                </div>
-                <p class="text-sm font-light text-gray-400">ROLE: QA Automation Engineer (Part-Time) | Jun 2022 - Jun 2023</p>
-                <p class="text-sm font-light text-gray-500 mb-2">COMMIT: Medunna Health Project</p>
-                <ul class="text-sm list-none space-y-1 text-fg-light">
-                    <li><span class="status-minor">// METHOD:</span> Developed automation frameworks and executed functional tests.</li>
-                    <li><span class="status-minor">// INTEGRATION:</span> Integrated test suites with **Jenkins** for CI/CD pipeline implementation.</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Trace 2: BSG Auto Parts & Nerex Motors (Previous Domain) - OLDEST -->
-        <div class="trace-line relative">
-            <div class="timeline-point bg-status-focus"></div>
-            <div class="pl-6">
-                <div class="flex justify-between items-center mb-1">
-                    <p class="text-lg font-semibold text-status-focus">TRACE_02: BSG_ECOM</p>
-                    <span class="status-tag bg-status-focus/20 text-status-focus">DOMAIN_SWITCH</span>
-                </div>
-                <p class="text-sm font-light text-gray-400">ROLE: Manual Tester & e-Commerce Specialist | Jan 2020 - Jan 2023</p>
-                <p class="text-sm font-light text-gray-500 mb-2">COMMIT: ERP QA & Sales Optimization</p>
-                <ul class="text-sm list-none space-y-1 text-fg-light">
-                    <li><span class="status-minor">// VALIDATION:</span> Performed Manual QA for in-house ERP systems.</li>
-                    <li><span class="status-minor">// OUTCOME:</span> Improved product visibility and boosted online sales on e-commerce platforms.</li>
-                </ul>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- [2] Data Modules / Skills & Contact (1/3 Column) -->
-    <aside class="lg:col-span-1 space-y-8">
-
-        <!-- Skill Matrix Module -->
-        <div class="card p-5 rounded-lg">
-            <h3 class="text-lg font-bold mb-4 text-status-major border-b border-gray-800 pb-2">MODULE_STATUS: SKILL_MATRIX</h3>
-            <div class="skill-box space-y-4 pr-2">
-                <p class="text-sm font-bold text-status-ok">LANGUAGES & CORE FRAMEWORKS</p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="status-tag status-ok" data-skill="JAVA">JAVA (4/5)</span>
-                    <span class="status-tag status-ok" data-skill="SELENIUM">SELENIUM (5/5)</span>
-                    <span class="status-tag status-focus" data-skill="PLAYWRIGHT">PLAYWRIGHT (4/5)</span>
-                    <span class="status-tag status-ok" data-skill="CUCUMBER">CUCUMBER (5/5)</span>
-                    <span class="status-tag status-focus" data-skill="REST ASSURED">REST ASSURED</span>
-                    <span class="status-tag bg-gray-700 text-fg-light" data-skill="SQL & JDBC">SQL & JDBC</span>
-                    <span class="status-tag bg-gray-700 text-fg-light" data-skill="TYPESCRIPT">TYPESCRIPT (4/5)</span>
-                    <span class="status-tag bg-gray-700 text-fg-light" data-skill="JAVASCRIPT">JAVASCRIPT (3/5)</span>
-                </div>
-
-                <p class="text-sm font-bold text-status-focus pt-2">CI/CD & DEVOPS ASSETS</p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="status-tag status-focus" data-skill="JENKINS">JENKINS</span>
-                    <span class="status-tag status-focus" data-skill="MICROSOFT AZURE">MICROSOFT AZURE</span>
-                    <span class="status-tag bg-gray-700 text-fg-light" data-skill="DOCKER">DOCKER</span>
-                    <span class="status-tag bg-gray-700 text-fg-light" data-skill="KIBANA / GRAFANA">KIBANA / GRAFANA</span>
-                </div>
-
-                <p class="text-sm font-bold text-status-minor pt-2">TEST METHODOLOGY & TOOLS</p>
-                <div class="flex flex-wrap gap-2">
-                    <span class="status-tag status-minor bg-status-minor/20" data-skill="AGILE / SCRUM">AGILE / SCRUM</span>
-                    <span class="status-tag status-minor bg-status-minor/20" data-skill="BDD FRAMEWORKS">BDD FRAMEWORKS</span>
-                    <span class="status-tag status-minor bg-status-minor/20" data-skill="DATA-DRIVEN">DATA-DRIVEN</span>
-                    <span class="status-tag bg-gray-700 text-fg-light" data-skill="POSTMAN / SWAGGER">POSTMAN / SWAGGER</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Certificate Trace Module -->
-        <div class="card p-5 rounded-lg">
-            <h3 class="text-lg font-bold mb-4 text-status-ok border-b border-gray-800 pb-2">MODULE_STATUS: CERTIFICATE_TRACE</h3>
-            <div class="space-y-3 text-sm">
-                <p><span class="text-status-ok font-bold">CERT_01:</span> ISTQB Certified Test Automation Engineer (SDET)</p>
-                <p class="text-xs text-gray-500 pl-4">// Global benchmark for test automation skill.</p>
-
-                <div class="h-px bg-gray-800 my-2"></div>
-
-                <p><span class="text-status-ok font-bold">CERT_02:</span> TechPro: Full-Stack Automation Program</p>
-                <p class="text-xs text-gray-500 pl-4">// Comprehensive hands-on automation training.</p>
-
-                <div class="h-px bg-gray-800 my-2"></div>
-
-                <p><span class="text-status-ok font-bold">CERT_03:</span> ING: API Design Course</p>
-                <p class="text-xs text-gray-500 pl-4">// Specialized training in banking API architecture.</p>
-
-                <div class="h-px bg-gray-800 my-2"></div>
-
-                <p><span class="text-status-ok font-bold">CERT_04:</span> ING: Java for Engineers</p>
-                <p class="text-xs text-gray-500 pl-4">// In-house Java proficiency for SDETs.</p>
-            </div>
-        </div>
-
-
-        <!-- Education Module -->
-        <div class="card p-5 rounded-lg">
-            <h3 class="text-lg font-bold mb-4 text-status-major border-b border-gray-800 pb-2">MODULE_STATUS: EDUCATION_REPORT</h3>
-            <div class="space-y-3 text-sm">
-                <p><span class="text-status-major font-bold">EDU_01:</span> Full Stack Automation Engineer</p>
-                <p class="text-xs text-gray-500 pl-4">TechPro Education (July 2021 - July 2022) | Applied Mathematics Focus</p>
-
-                <div class="h-px bg-gray-800 my-2"></div>
-
-                <p><span class="text-status-major font-bold">EDU_02:</span> Bachelor of Applied Science (B.A.S.)</p>
-                <p class="text-xs text-gray-500 pl-4">Istanbul University (Sep 2007 - July 2013) | Mathematics</p>
-            </div>
-        </div>
-
-        <!-- Contact Module -->
-        <div class="card p-5 rounded-lg">
-            <h3 class="text-lg font-bold mb-4 text-status-major border-b border-gray-800 pb-2">MODULE_STATUS: CONNECTION_PORT</h3>
-            <div class="space-y-3 text-sm">
-                <!-- AVAILABILITY STATUS -->
-                <p class="font-bold text-status-search"><span class="status-tag status-search">STATUS_AVAILABLE</span>: Actively seeking new SDET/QA Automation opportunities.</p>
-                <div class="h-px bg-gray-800 my-2"></div>
-                <p><span class="text-status-focus font-bold">EMAIL:</span> <a href="mailto:info.emredursun@gmail.com" class="text-status-ok hover:underline">info.emredursun@gmail.com</a></p>
-                <p><span class="text-status-focus font-bold">PHONE:</span> +31 6 2878 8948 (NL)</p>
-                <p><span class="text-status-focus font-bold">LINKEDIN:</span> <a href="https://www.linkedin.com/in/emre-dursun-nl/" target="_blank" class="text-status-ok hover:underline">/emre-dursun-nl/</a></p>
-            </div>
-        </div>
-
-    </aside>
-</div>
-
-<script type="module">
-    // Mandatory Firebase imports for environment compatibility
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-    // Global variables provided by the Canvas environment
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-    let app, auth, db;
-
-    // Function to initialize Firebase (kept for potential future database features)
-    function initFirebase() {
-        try {
-            if (Object.keys(firebaseConfig).length > 0) {
-                app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-
-                // Attempt authentication
-                if (initialAuthToken) {
-                    signInWithCustomToken(auth, initialAuthToken).catch(e => console.error("Custom token sign-in failed:", e));
-                } else {
-                    signInAnonymously(auth).catch(e => console.error("Anonymous sign-in failed:", e));
-                }
-            }
-        } catch (e) {
-            console.error("Firebase initialization failed:", e);
+        /* MODIFIED HOVER EFFECT for form fields */
+        form input:hover, form textarea:hover {
+            border-color: var(--accent); /* Changes border to the accent color */
+            box-shadow: 0 0 10px rgba(6,182,212,0.2);
         }
+        form input::placeholder, form textarea::placeholder{color:rgba(230,238,248,0.45)}
+        .form-row{display:flex;gap:10px}
+        .form-row .col{flex:1}
+
+        footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px;padding-bottom:18px}
+
+        /* ===========================
+           ANIMATIONS (simple)
+           =========================== */
+        .fade-in{opacity:0;transform:translateY(8px);animation:fadeIn .6s forwards var(--ease)}
+        .stagger > *{opacity:0;transform:translateY(8px)}
+        .stagger > *:nth-child(1){animation:staggerIn .5s .08s forwards}
+        .stagger > *:nth-child(2){animation:staggerIn .5s .16s forwards}
+        .stagger > *:nth-child(3){animation:staggerIn .5s .24s forwards}
+        .stagger > *:nth-child(4){animation:staggerIn .5s .32s forwards}
+        @keyframes fadeIn{to{opacity:1;transform:none}}
+        @keyframes staggerIn{to{opacity:1;transform:none}}
+
+        /* responsive */
+        @media (max-width:1000px){
+          main{grid-template-columns:1fr 320px}
+          .projects{grid-template-columns:repeat(2,1fr)}
+          .testimonials{grid-template-columns:1fr}
+        }
+        @media (max-width:820px){
+          header{align-items:flex-start;gap:10px}
+          nav{display:none}
+          .menu-toggle{display:inline-flex}
+          main{grid-template-columns:1fr;gap:18px}
+          .projects{grid-template-columns:1fr}
+          .photo{height:140px}
+        }
+        @media (max-width:420px){
+          .hero h1{font-size:22px}
+          .logo{width:48px;height:48px}
+        }
+
+        /* accessibility focus */
+        a:focus, button:focus, input:focus, textarea:focus { outline: 3px solid rgba(6,182,212,0.14); outline-offset:3px; }
+    </style><style>
+    /* ===========================
+       VARIABLES & BASE
+       =========================== */
+    :root{
+      --bg: #07101a;
+      --panel: rgba(255,255,255,0.03);
+      --muted: #98a0b3;
+      --accent: #06b6d4;
+      --accent-2: #f6a03d;
+      --glass: rgba(255,255,255,0.04);
+      --radius: 14px;
+      --maxw: 1120px;
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      --ease: cubic-bezier(.2,.9,.2,1);
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(6,182,212,0.035), transparent 6%),
+        radial-gradient(800px 400px at 95% 90%, rgba(246,160,61,0.02), transparent 6%),
+        linear-gradient(180deg,var(--bg) 0%, #04121a 100%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding:28px 18px;
+      display:flex;
+      justify-content:center;
     }
 
-    initFirebase();
+    /* container */
+    .container{max-width:var(--maxw); width:100%;}
 
-    // No other custom JavaScript or event listeners are required for this static version.
+    /* ===========================
+       HEADER / NAV
+       =========================== */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:26px;
+    }
+
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:800;color:#041018;
+      box-shadow:0 6px 20px rgba(6,182,212,0.08), inset 0 -6px 20px rgba(255,255,255,0.02);
+      font-family:var(--sans);
+    }
+    .brand .title{line-height:1}
+    .brand .title .name{font-weight:800;font-size:16px}
+    .brand .title .role{color:var(--muted);font-size:13px;margin-top:2px}
+
+    nav{display:flex;gap:12px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:9px;font-weight:600;transition:all .18s var(--ease)}
+    nav a:hover{color:#fff;background:rgba(255,255,255,0.03)}
+    nav a.primary{border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--accent)}
+    nav a.primary:hover{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041018}
+
+    /* small menu (mobile) */
+    .menu-toggle{display:none;border:1px solid rgba(255,255,255,0.03);background:transparent;padding:8px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+    /* ===========================
+       LAYOUT: HERO + SIDEBAR
+       =========================== */
+    main{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);box-shadow:0 10px 40px rgba(2,6,23,0.6);transition:transform .22s var(--ease)}
+    .card:hover{transform:translateY(-2px)}
+
+    .hero h1{font-size:32px;margin:0 0 8px}
+    .lead{color:var(--muted);margin:0 0 14px}
+    .cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;font-weight:700;
+      cursor:pointer;border:none;text-decoration:none;color:inherit;transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071018}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(6,182,212,0.08)}
+
+    /* profile aside */
+    .profile{display:flex;flex-direction:column;gap:12px}
+    .photo{
+      height:168px;border-radius:12px;background:linear-gradient(180deg,#071426,#04121a);display:flex;align-items:center;justify-content:center;overflow:hidden;
+      box-shadow:inset 0 -10px 40px rgba(0,0,0,0.5);
+    }
+    .photo img{width:128px;height:128px;border-radius:12px;object-fit:cover}
+    .contact-list{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+
+    /* MODIFIED HOVER EFFECT for contact list links */
+    .contact-list a {
+        color: var(--muted);
+        text-decoration: none;
+        display: block;
+        padding: 2px 4px;
+        margin: -2px -4px;
+        border-radius: 4px;
+        transition: background .2s var(--ease);
+    }
+    .contact-list a:hover {
+        color: #fff;
+        background: rgba(6,182,212,0.1); /* Brighter accent color on hover */
+    }
+
+    /* small label */
+    .muted{color:var(--muted)}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* ===========================
+       SECTIONS
+       =========================== */
+    section{margin-top:18px}
+    h2{font-size:16px;margin:0 0 10px}
+    .skills{display:flex;flex-wrap:wrap;gap:10px}
+    .badge{
+      padding:8px 10px;border-radius:8px;background:var(--glass);font-weight:700;color:var(--muted);font-size:13px;
+      transition:all .14s var(--ease);
+      cursor:pointer;
+    }
+    /* MODIFIED HOVER EFFECT for badges */
+    .badge:hover{
+      background:rgba(6,182,212,0.1); /* Accent-based hover color */
+      color:var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .timeline{display:flex;flex-direction:column;gap:12px}
+    .job{
+      display:flex;gap:12px;align-items:flex-start;
+      /* ADDED HOVER EFFECT for Professional Experience row */
+      transition: all .2s var(--ease);
+      padding: 4px 0;
+      border-radius: var(--radius);
+    }
+    /* MODIFIED HOVER EFFECT for job row */
+    .job:hover {
+        background: rgba(6, 182, 212, 0.05); /* Subtle accent blue highlight */
+        box-shadow: 0 0 15px rgba(6,182,212,0.08); /* Increased shadow for noticeable lift */
+    }
+    .meta{min-width:150px;color:var(--muted);font-size:13px}
+    .job .meta strong{display:block;color:#fff}
+    .job .desc{flex:1}
+
+    /* == START: FIX FOR EXPERIENCE SECTION LAYOUT ISSUE (PREVIOUS FIX) == */
+    /* 1. Fix the position of the vertical timeline bar */
+    .timeline::before {
+        content: '';
+        position: absolute;
+        width: 2px;
+        background-color: var(--color-primary);
+        top: 0;
+        bottom: 0;
+        left: 36%; /* CORRECTION: Increased left position to align with the new meta column width */
+    }
+
+    /* 2. Fix the meta column (Date/Company Name) width and alignment */
+    .timeline .meta {
+        width: 35%; /* Increased width to prevent text from wrapping and breaking alignment */
+        flex-shrink: 0;
+        text-align: right;
+        padding-right: 25px; /* Adds necessary space between the text and the vertical bar */
+        min-width: unset;
+        position: relative;
+    }
+
+    /* 3. Prevent the text inside the meta column (date/company name) from wrapping */
+    .timeline .meta * {
+        white-space: nowrap;
+    }
+    /* == END: FIX FOR EXPERIENCE SECTION LAYOUT ISSUE == */
+
+
+    .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .project{
+      padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.015),rgba(255,255,255,0.01));
+      cursor:pointer;transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .project:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(6,182,212,0.08)}
+    .project .meta{font-weight:700;font-size:13px}
+    .project p{margin:0;color:var(--muted);font-size:14px}
+
+    .certs{display:flex;flex-wrap:wrap;gap:8px}
+    .cert{
+      background:var(--glass);padding:10px;border-radius:8px;font-size:13px;color:var(--muted);
+      transition: transform .22s var(--ease), background .22s var(--ease);
+      cursor:pointer;
+    }
+    /* MODIFIED HOVER EFFECT for certifications */
+    .cert:hover {
+        background: rgba(6,182,212,0.1); /* Accent-based hover color */
+        color: var(--accent);
+        transform: translateY(-2px);
+    }
+
+    /* testimonials card */
+    .testimonials{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .quote{
+      padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);font-size:14px;color:var(--muted);
+      transition: transform .22s var(--ease), box-shadow .22s var(--ease), background .22s var(--ease);
+      cursor:pointer;
+    }
+    /* MODIFIED HOVER EFFECT for testimonials */
+    .quote:hover{
+      transform:translateY(-4px);
+      background:linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015)); /* Brighter gradient */
+      box-shadow:0 12px 30px rgba(6,182,212,0.1); /* Stronger shadow */
+    }
+
+    /* contact form (progressive enhancement) */
+    form.contact{display:flex;flex-direction:column;gap:10px}
+    form input, form textarea{
+      background:transparent;border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px;color:#e6eef8;font-size:14px;
+      resize:none;
+      transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
+    }
+    /* MODIFIED HOVER EFFECT for form fields */
+    form input:hover, form textarea:hover {
+        border-color: var(--accent); /* Changes border to the accent color */
+        box-shadow: 0 0 10px rgba(6,182,212,0.2);
+    }
+    form input::placeholder, form textarea::placeholder{color:rgba(230,238,248,0.45)}
+    .form-row{display:flex;gap:10px}
+    .form-row .col{flex:1}
+
+    footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px;padding-bottom:18px}
+
+    /* ===========================
+       ANIMATIONS (simple)
+       =========================== */
+    .fade-in{opacity:0;transform:translateY(8px);animation:fadeIn .6s forwards var(--ease)}
+    .stagger > *{opacity:0;transform:translateY(8px)}
+    .stagger > *:nth-child(1){animation:staggerIn .5s .08s forwards}
+    .stagger > *:nth-child(2){animation:staggerIn .5s .16s forwards}
+    .stagger > *:nth-child(3){animation:staggerIn .5s .24s forwards}
+    .stagger > *:nth-child(4){animation:staggerIn .5s .32s forwards}
+    @keyframes fadeIn{to{opacity:1;transform:none}}
+    @keyframes staggerIn{to{opacity:1;transform:none}}
+
+    /* responsive */
+    @media (max-width:1000px){
+      main{grid-template-columns:1fr 320px}
+      .projects{grid-template-columns:repeat(2,1fr)}
+      .testimonials{grid-template-columns:1fr}
+    }
+    @media (max-width:820px){
+      header{align-items:flex-start;gap:10px}
+      nav{display:none}
+      .menu-toggle{display:inline-flex}
+      main{grid-template-columns:1fr;gap:18px}
+      .projects{grid-template-columns:1fr}
+      .photo{height:140px}
+    }
+    @media (max-width:420px){
+      .hero h1{font-size:22px}
+      .logo{width:48px;height:48px}
+    }
+
+    /* accessibility focus */
+    a:focus, button:focus, input:focus, textarea:focus { outline: 3px solid rgba(6,182,212,0.14); outline-offset:3px; }
+</style><style>
+    /* ===========================
+       VARIABLES & BASE
+       =========================== */
+    :root{
+      --bg: #07101a;
+      --panel: rgba(255,255,255,0.03);
+      --muted: #98a0b3;
+      --accent: #06b6d4;
+      --accent-2: #f6a03d;
+      --glass: rgba(255,255,255,0.04);
+      --radius: 14px;
+      --maxw: 1120px;
+      --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      --ease: cubic-bezier(.2,.9,.2,1);
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(6,182,212,0.035), transparent 6%),
+        radial-gradient(800px 400px at 95% 90%, rgba(246,160,61,0.02), transparent 6%),
+        linear-gradient(180deg,var(--bg) 0%, #04121a 100%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding:28px 18px;
+      display:flex;
+      justify-content:center;
+    }
+
+    /* container */
+    .container{max-width:var(--maxw); width:100%;}
+
+    /* ===========================
+       HEADER / NAV
+       =========================== */
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:18px;
+      margin-bottom:26px;
+    }
+
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:56px;height:56px;border-radius:12px;
+      background:linear-gradient(135deg,var(--accent),var(--accent-2));
+      display:flex;align-items:center;justify-content:center;font-weight:800;color:#041018;
+      box-shadow:0 6px 20px rgba(6,182,212,0.08), inset 0 -6px 20px rgba(255,255,255,0.02);
+      font-family:var(--sans);
+    }
+    .brand .title{line-height:1}
+    .brand .title .name{font-weight:800;font-size:16px}
+    .brand .title .role{color:var(--muted);font-size:13px;margin-top:2px}
+
+    nav{display:flex;gap:12px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:9px;font-weight:600;transition:all .18s var(--ease)}
+    nav a:hover{color:#fff;background:rgba(255,255,255,0.03)}
+    nav a.primary{border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--accent)}
+    nav a.primary:hover{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041018}
+
+    /* small menu (mobile) */
+    .menu-toggle{display:none;border:1px solid rgba(255,255,255,0.03);background:transparent;padding:8px;border-radius:10px;color:var(--muted);cursor:pointer}
+
+    /* ===========================
+       LAYOUT: HERO + SIDEBAR
+       =========================== */
+    main{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);box-shadow:0 10px 40px rgba(2,6,23,0.6);transition:transform .22s var(--ease)}
+    .card:hover{transform:translateY(-2px)}
+
+    .hero h1{font-size:32px;margin:0 0 8px}
+    .lead{color:var(--muted);margin:0 0 14px}
+    .cta{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;font-weight:700;
+      cursor:pointer;border:none;text-decoration:none;color:inherit;transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+    }
+    .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071018}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(6,182,212,0.08)}
+
+    /* profile aside */
+    .profile{display:flex;flex-direction:column;gap:12px}
+    .photo{
+      height:168px;border-radius:12px;background:linear-gradient(180deg,#071426,#04121a);display:flex;align-items:center;justify-content:center;overflow:hidden;
+      box-shadow:inset 0 -10px 40px rgba(0,0,0,0.5);
+    }
+    .photo img{width:128px;height:128px;border-radius:12px;object-fit:cover}
+    .contact-list{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+
+    /* MODIFIED HOVER EFFECT for contact list links */
+    .contact-list a {
+        color: var(--muted);
+        text-decoration: none;
+        display: block;
+        padding: 2px 4px;
+        margin: -2px -4px;
+        border-radius: 4px;
+        transition: background .2s var(--ease);
+    }
+    .contact-list a:hover {
+        color: #fff;
+        background: rgba(6,182,212,0.1); /* Brighter accent color on hover */
+    }
+
+    /* small label */
+    .muted{color:var(--muted)}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* ===========================
+       SECTIONS
+       =========================== */
+    section{margin-top:18px}
+    h2{font-size:16px;margin:0 0 10px}
+    .skills{display:flex;flex-wrap:wrap;gap:10px}
+    .badge{
+      padding:8px 10px;border-radius:8px;background:var(--glass);font-weight:700;color:var(--muted);font-size:13px;
+      transition:all .14s var(--ease);
+      cursor:pointer;
+    }
+    /* MODIFIED HOVER EFFECT for badges */
+    .badge:hover{
+      background:rgba(6,182,212,0.1); /* Accent-based hover color */
+      color:var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .timeline{display:flex;flex-direction:column;gap:12px}
+    .job{
+      display:flex;gap:12px;align-items:flex-start;
+      /* ADDED HOVER EFFECT for Professional Experience row */
+      transition: all .2s var(--ease);
+      padding: 4px 0;
+      border-radius: var(--radius);
+    }
+    /* MODIFIED HOVER EFFECT for job row */
+    .job:hover {
+        background: rgba(6, 182, 212, 0.05); /* Subtle accent blue highlight */
+        box-shadow: 0 0 15px rgba(6,182,212,0.08); /* Increased shadow for noticeable lift */
+    }
+    .meta{min-width:150px;color:var(--muted);font-size:13px}
+    .job .meta strong{display:block;color:#fff}
+    .job .desc{flex:1}
+
+    /* == START: FIX FOR EXPERIENCE SECTION LAYOUT ISSUE (PREVIOUS FIX) == */
+    /* 1. Fix the position of the vertical timeline bar */
+    .timeline::before {
+        content: '';
+        position: absolute;
+        width: 2px;
+        background-color: var(--color-primary);
+        top: 0;
+        bottom: 0;
+        left: 36%; /* CORRECTION: Increased left position to align with the new meta column width */
+    }
+
+    /* 2. Fix the meta column (Date/Company Name) width and alignment */
+    .timeline .meta {
+        width: 35%; /* Increased width to prevent text from wrapping and breaking alignment */
+        flex-shrink: 0;
+        text-align: right;
+        padding-right: 25px; /* Adds necessary space between the text and the vertical bar */
+        min-width: unset;
+        position: relative;
+    }
+
+    /* 3. Prevent the text inside the meta column (date/company name) from wrapping */
+    .timeline .meta * {
+        white-space: nowrap;
+    }
+    /* == END: FIX FOR EXPERIENCE SECTION LAYOUT ISSUE == */
+
+
+    .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .project{
+      padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.015),rgba(255,255,255,0.01));
+      cursor:pointer;transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .project:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(6,182,212,0.08)}
+    .project .meta{font-weight:700;font-size:13px}
+    .project p{margin:0;color:var(--muted);font-size:14px}
+
+    .certs{display:flex;flex-wrap:wrap;gap:8px}
+    .cert{
+      background:var(--glass);padding:10px;border-radius:8px;font-size:13px;color:var(--muted);
+      transition: transform .22s var(--ease), background .22s var(--ease);
+      cursor:pointer;
+    }
+    /* MODIFIED HOVER EFFECT for certifications */
+    .cert:hover {
+        background: rgba(6,182,212,0.1); /* Accent-based hover color */
+        color: var(--accent);
+        transform: translateY(-2px);
+    }
+
+    /* testimonials card */
+    .testimonials{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .quote{
+      padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.015),transparent);font-size:14px;color:var(--muted);
+      transition: transform .22s var(--ease), box-shadow .22s var(--ease), background .22s var(--ease);
+      cursor:pointer;
+    }
+    /* MODIFIED HOVER EFFECT for testimonials */
+    .quote:hover{
+      transform:translateY(-4px);
+      background:linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015)); /* Brighter gradient */
+      box-shadow:0 12px 30px rgba(6,182,212,0.1); /* Stronger shadow */
+    }
+
+    /* contact form (progressive enhancement) */
+    form.contact{display:flex;flex-direction:column;gap:10px}
+    form input, form textarea{
+      background:transparent;border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px;color:#e6eef8;font-size:14px;
+      resize:none;
+      transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
+    }
+    /* MODIFIED HOVER EFFECT for form fields */
+    form input:hover, form textarea:hover {
+        border-color: var(--accent); /* Changes border to the accent color */
+        box-shadow: 0 0 10px rgba(6,182,212,0.2);
+    }
+    form input::placeholder, form textarea::placeholder{color:rgba(230,238,248,0.45)}
+    .form-row{display:flex;gap:10px}
+    .form-row .col{flex:1}
+
+    footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px;padding-bottom:18px}
+
+    /* ===========================
+       ANIMATIONS (simple)
+       =========================== */
+    .fade-in{opacity:0;transform:translateY(8px);animation:fadeIn .6s forwards var(--ease)}
+    .stagger > *{opacity:0;transform:translateY(8px)}
+    .stagger > *:nth-child(1){animation:staggerIn .5s .08s forwards}
+    .stagger > *:nth-child(2){animation:staggerIn .5s .16s forwards}
+    .stagger > *:nth-child(3){animation:staggerIn .5s .24s forwards}
+    .stagger > *:nth-child(4){animation:staggerIn .5s .32s forwards}
+    @keyframes fadeIn{to{opacity:1;transform:none}}
+    @keyframes staggerIn{to{opacity:1;transform:none}}
+
+    /* responsive */
+    @media (max-width:1000px){
+      main{grid-template-columns:1fr 320px}
+      .projects{grid-template-columns:repeat(2,1fr)}
+      .testimonials{grid-template-columns:1fr}
+    }
+    @media (max-width:820px){
+      header{align-items:flex-start;gap:10px}
+      nav{display:none}
+      .menu-toggle{display:inline-flex}
+      main{grid-template-columns:1fr;gap:18px}
+      .projects{grid-template-columns:1fr}
+      .photo{height:140px}
+    }
+    @media (max-width:420px){
+      .hero h1{font-size:22px}
+      .logo{width:48px;height:48px}
+    }
+
+    /* accessibility focus */
+    a:focus, button:focus, input:focus, textarea:focus { outline: 3px solid rgba(6,182,212,0.14); outline-offset:3px; }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="brand">
+            <div class="logo" aria-hidden="true">ED</div>
+            <div class="title">
+                <div class="name">Emre Dursun</div>
+                <div class="role">ISTQB® SDET • Test Automation Engineer</div>
+            </div>
+        </div>
+
+        <nav aria-label="Primary navigation">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact" class="primary">Contact</a>
+        </nav>
+
+        <button class="menu-toggle" aria-controls="mobile-menu" aria-expanded="false" id="menuBtn">Menu</button>
+    </header>
+
+    <main>
+        <!-- LEFT: main content -->
+        <div>
+            <!-- HERO -->
+            <section class="card" aria-labelledby="hero-title">
+                <div class="hero-content stagger">
+                    <h1 id="hero-title">I build reliable automation systems that help teams ship faster</h1>
+                    <p class="lead">ISTQB® Certified Test Automation Engineer (SDET) with experience in UI, API, and database
+                        testing using Java, Selenium, Cucumber, Postman, and Rest Assured. Skilled in designing
+                        scalable automation frameworks and integrating them with CI/CD pipelines. Proven track
+                        record of contributing to high-quality releases in Agile teams across banking,
+                        healthcare, and e-commerce domains. Fluent in English and Turkish (native),</p>
+
+                    <div style="display:flex;gap:12px;align-items:center" class="fade-in" >
+                        <a class="btn primary" href="#projects">See My Work</a>
+                        <a class="btn ghost" href="mailto:info.emredursun@gmail.com">Contact Me</a>
+                    </div>
+
+                    <!-- Tiny code-console effect -->
+                    <div aria-hidden="true" style="margin-top:12px;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;font-size:13px;color:var(--muted);background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;display:inline-block">
+                        <span id="console">> running: load-frameworks --success ✓</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT -->
+            <section id="about" class="card fade-in">
+                <h2>About</h2>
+                <p class="muted">Driven by precision, powered by curiosity. I transform manual testing corridors into automated, repeatable systems so teams have clear feedback and confidence to ship.</p>
+                <p style="margin-top:10px">I’ve worked across banking and e-commerce domains building API & UI automation, resilient test pipelines, and observability to help teams scale testing without slowing delivery. I enjoy breaking complex flows into simple, testable parts and collaborating cross-functionally to reduce risk.</p>
+            </section>
+
+            <!-- SKILLS -->
+            <section id="skills" class="card fade-in">
+                <h2>Skills & Tech Stack</h2>
+                <div class="skills" style="margin-top:8px">
+                    <span class="badge">Java</span>
+                    <span class="badge">TypeScript</span>
+                    <span class="badge">Playwright</span>
+                    <span class="badge">Selenium</span>
+                    <span class="badge">REST Assured</span>
+                    <span class="badge">Cucumber</span>
+                    <span class="badge">Azure DevOps</span>
+                    <span class="badge">Jenkins</span>
+                    <span class="badge">Docker</span>
+                    <span class="badge">SQL</span>
+                    <span class="badge">Postman</span>
+                </div>
+            </section>
+
+            <!-- EXPERIENCES -->
+            <section id="experience" class="card fade-in" aria-labelledby="experience-title">
+                <h2 id="experience-title">Professional Experience</h2>
+                <div class="timeline stagger" style="margin-top:12px">
+
+                    <div class="job">
+                        <div class="meta">
+                            <strong>September 2023 – September 2025</strong><br>
+                            ING Bank / Sogyo IT
+                        </div>
+                        <div class="desc">
+                            <div style="font-weight:700">Test Automation Engineer (International Payments)</div>
+                            <div class="small muted" style="margin-bottom:4px">Amsterdam/Utrecht, Netherlands</div>
+                            <p class="muted" style="margin:0 0 4px;font-size:14px">Developed and maintained automation test frameworks for payment systems. Executed functional and regression test cases, and collaborated with BAS/stakeholders to ensure product quality in an Agile environment.</p>
+                        </div>
+                    </div>
+
+                    <div class="job">
+                        <div class="meta">
+                            <strong>June 2022 – June 2023</strong><br>
+                            TechPro Education
+                        </div>
+                        <div class="desc">
+                            <div style="font-weight:700">QA Automation Engineer (Part-Time)</div>
+                            <div class="small muted" style="margin-bottom:4px">Remote</div>
+                            <p class="muted" style="margin:0 0 4px;font-size:14px">Developed and managed automation frameworks for the Medunna Health Project. Integrated test suites with Jenkins for CI/CD implementation and executed functional/regression tests.</p>
+                        </div>
+                    </div>
+
+                    <div class="job">
+                        <div class="meta">
+                            <strong>May 2021 – Jan 2023</strong><br>
+                            BSG Auto Parts & Nerex Motors
+                        </div>
+                        <div class="desc">
+                            <div style="font-weight:700">Manual Tester & e-Commerce Specialist</div>
+                            <div class="small muted" style="margin-bottom:4px">Amsterdam, Netherlands</div>
+                            <p class="muted" style="margin:0 0 4px;font-size:14px">Conducted manual testing for in-house ERP systems. Additionally, improved product search visibility and boosted online sales through e-commerce strategy on platforms like Amazon and eBay.</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PROJECTS -->
+            <section id="projects" class="card fade-in">
+                <h2>Projects & Highlights</h2>
+                <div class="projects" style="margin-top:12px">
+                    <article class="project" aria-labelledby="p1">
+                        <div id="p1" class="meta">Payment Automation Framework — ING</div>
+                        <p>Modular API & UI test suites (REST Assured + Playwright) integrated into CI. Result: reduced regression time by improving test reliability and parallelization.</p>
+                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Java · REST Assured · Playwright · Jenkins</div>
+                    </article>
+
+                    <article class="project" aria-labelledby="p2">
+                        <div id="p2" class="meta">E-commerce Playwright Suite</div>
+                        <p>Cross-browser Playwright architecture handling complex checkout flows and multi-locale scenarios with containerized runners.</p>
+                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Playwright · TypeScript · Docker</div>
+                    </article>
+
+                    <article class="project" aria-labelledby="p3">
+                        <div id="p3" class="meta">CI/CD Test Pipeline</div>
+                        <p>End-to-end test orchestration in Azure DevOps/Jenkins enabling fast feedback on merges and protected releases.</p>
+                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Azure DevOps · Jenkins · Docker</div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- CERTS & TESTIMONIALS -->
+            <section class="card fade-in" aria-labelledby="certs-title">
+                <h2 id="certs-title">Certifications & Education</h2>
+                <div class="certs" style="margin-top:10px">
+                    <div class="cert">ISTQB Certified Test Automation Engineer</div>
+                    <div class="cert">TechPro Full-Stack Automation Program</div>
+                    <div class="cert">ING Java for Engineers</div>
+                    <div class="cert">ING API Design Course</div>
+                </div>
+                <div class="small muted" style="margin-top:10px">Bachelor of Applied Science — Istanbul University</div>
+
+                <div style="margin-top:14px">
+                    <h2 style="margin-top:16px">Testimonials</h2>
+                    <div class="testimonials" style="margin-top:10px">
+                        <div class="quote">“Emre increased our test reliability and made regression runs predictable — a huge help to the delivery cycle.” <div class="small muted" style="margin-top:8px">— Colleague at ING</div></div>
+                        <div class="quote">“Practical, reliable, and clear. Brought automation to parts of the product we thought were hard to cover.” <div class="small muted" style="margin-top:8px">— Product Manager</div></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer>
+                © 2025 Emre Dursun • Built with precision & curiosity.
+            </footer>
+        </div>
+
+        <!-- RIGHT: sidebar -->
+        <aside class="profile card" aria-label="Profile card">
+            <div class="photo" role="img" aria-label="Emre Dursun headshot">
+                <img src="https://media.licdn.com/dms/image/v2/D4D03AQHlu0evgEIp-A/profile-displayphoto-scale_200_200/B4DZhYUPh9HwAY-/0/1753828359776?e=1763596800&v=beta&t=Q7gf4fZrUPst920vFbjsybkOaIWk2TSXGzFMvbPomK0" alt="Emre Dursun headshot" />
+            </div>
+
+            <div style="font-weight:800">Emre Dursun</div>
+            <div class="muted">SDET • Test Automation • CI/CD</div>
+
+            <div class="contact-list">
+                <div>📍 Netherlands</div>
+                <div>✉️ <a href="mailto:info.emredursun@gmail.com" style="color:var(--accent);text-decoration:none">info.emredursun@gmail.com</a></div>
+                <div>🔗 <a href="https://www.linkedin.com/in/emre-dursun-nl" target="_blank" rel="noopener" style="color:var(--muted)">LinkedIn</a></div>
+                <div class="small muted">Phone: +31 6 2878 8948</div>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-top:10px">
+                <a class="btn ghost" href="#experience" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">Resume</a>
+                <a class="btn ghost" href="/CV.pdf" target="_blank">Download CV</a>
+            </div>
+
+            <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:12px 0">
+
+            <!-- CONTACT -->
+            <div>
+                <h2 style="margin:0 0 8px">Let's Connect</h2>
+                <p class="muted" style="margin:0 0 10px">Open to new roles, contract work, and collaborations in automation, QA strategy, and test engineering.</p>
+
+                <!-- Progressive contact form: attempts fetch to a serverless endpoint (optional), otherwise mailto fallback -->
+                <form id="contactForm" class="contact" onsubmit="handleContact(event)">
+                    <div class="form-row">
+                        <input id="name" name="name" type="text" placeholder="Your name" required aria-label="Your name" />
+                    </div>
+                    <div class="form-row">
+                        <input id="email" name="email" type="email" placeholder="Your email" required aria-label="Your email" />
+                    </div>
+                    <div>
+                        <textarea id="message" name="message" rows="4" placeholder="Short message" required aria-label="Message"></textarea>
+                    </div>
+
+                    <div style="display:flex;gap:8px">
+                        <button type="submit" class="btn primary">Send message</button>
+                        <a class="btn ghost" href="mailto:info.emredursun@gmail.com?subject=Contact%20from%20Website&body=Hi%20Emre%2C%0A%0A" target="_blank">Email</a>
+                    </div>
+
+                    <div id="formResult" class="small muted" style="margin-top:8px"></div>
+                </form>
+            </div>
+        </aside>
+    </main>
+</div>
+
+<!-- Minimal JS: interactions & progressive contact handling -->
+<script>
+    // Console typing animation (purely visual)
+    (function(){
+      const consoleEl = document.getElementById('console');
+      const messages = [
+        '> running: load-frameworks --success ✓',
+        '> run: integrate-ci --ok ✓',
+        '> status: tests/critical: 98% pass',
+        '> ready: deploy (staged)'
+      ];
+      let i = 0;
+      setInterval(()=> {
+        i = (i+1) % messages.length;
+        consoleEl.style.opacity = 0;
+        setTimeout(()=> { consoleEl.textContent = messages[i]; consoleEl.style.opacity = 1; }, 220);
+      }, 3000);
+    })();
+
+    // Mobile menu toggle (simple)
+    const menuBtn = document.getElementById('menuBtn');
+    menuBtn && menuBtn.addEventListener('click', function(){
+      const nav = document.querySelector('nav');
+      const open = nav.style.display !== 'flex';
+      nav.style.display = open ? 'flex' : 'none';
+      this.setAttribute('aria-expanded', open);
+    });
+
+    // Contact form: progressive enhancement
+    async function handleContact(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      const resultEl = document.getElementById('formResult');
+
+      // Attempt to POST to a serverless endpoint (replace URL when you have one).
+      // If it fails (no backend), fallback to mailto to preserve functionality.
+      const endpoint = ''; // <-- optionally add your serverless endpoint (Netlify functions, Vercel, Formspree, etc.)
+      if(endpoint){
+        try {
+          const res = await fetch(endpoint, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({name,email,message})
+          });
+          if(res.ok){
+            resultEl.textContent = 'Message sent — thank you!';
+            e.target.reset();
+            return;
+          }
+          throw new Error('Network');
+        } catch(err){
+          resultEl.textContent = 'Failed to send. Opening email client as fallback...';
+        }
+      }
+
+      // mailto fallback
+      const mailto = `mailto:info.emredursun@gmail.com?subject=${encodeURIComponent('Website contact: '+name)}&body=${encodeURIComponent('Name: '+name+'\\nEmail: '+email+'\\n\\n'+message)}`;
+      window.location.href = mailto;
+    }
+
+    // Entrance animations: add fade-in classes when DOM is ready
+    document.addEventListener('DOMContentLoaded', ()=> {
+      document.querySelectorAll('.fade-in').forEach((el, idx) => {
+        el.style.animation = `fadeIn .6s ${idx*0.06}s forwards`;
+      });
+      // quick stagger for hero
+      document.querySelectorAll('.stagger > *').forEach((n,i) => {
+        n.style.animation = `staggerIn .5s ${i*0.08}s forwards`;
+      });
+    });
 </script>
 </body>
 </html>
