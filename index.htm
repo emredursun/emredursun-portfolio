@@ -80,13 +80,13 @@
         .brand .title .role{color:var(--muted);font-size:13px;margin-top:2px}
         nav{display:flex;gap:12px;align-items:center}
         nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:9px;font-weight:600;transition:all .18s var(--ease)}
-        nav a:hover{color:#fff;background:rgba(255,255,255,0.03)}
+        nav a:hover{color:#fff;background:rgba(255,255,255,0.03);transform: translateY(-1px) scale(1.01);}
         nav a.primary{border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--accent)}
-        nav a.primary:hover{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041018}
+        nav a.primary:hover{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#041018;transform: translateY(-1px) scale(1.01);}
         .menu-toggle{display:none;border:1px solid rgba(255,255,255,0.03);background:transparent;padding:8px;border-radius:10px;color:var(--muted);cursor:pointer}
         main{display:grid;grid-template-columns:1fr 340px;gap:28px;align-items:start}
         .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:var(--radius);box-shadow:0 10px 40px rgba(2,6,23,0.6);transition:transform .22s var(--ease)}
-        .card:hover{transform:translateY(-2px)}
+        .card:hover{transform:translateY(-4px);box-shadow:0 15px 50px rgba(2,6,23,0.7)}
         .hero h1{font-size:32px;margin:0 0 8px}
         .lead{color:var(--muted);margin:0 0 14px}
         .cta{display:flex;gap:10px;flex-wrap:wrap}
@@ -96,7 +96,7 @@
         }
         .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#071018}
         .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--accent)}
-        .btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(6,182,212,0.08)}
+        .btn:hover{transform:translateY(-4px);box-shadow:0 12px 35px rgba(6,182,212,0.15)}
         .profile{
           display:flex;
           flex-direction:column;
@@ -124,6 +124,7 @@
         .contact-list a:hover {
             color: #fff;
             background: rgba(6,182,212,0.1);
+            transform: scale(1.02); /* Subtle zoom */
         }
         .muted{color:var(--muted)}
         .small{font-size:13px;color:var(--muted)}
@@ -138,7 +139,9 @@
         .badge:hover{
           background:rgba(6,182,212,0.1);
           color:var(--accent);
-          transform: translateY(-2px);
+          /* MODIFIED for larger zoom effect (scale 1.10) */
+          transform: translateY(-5px) scale(1.10);
+          box-shadow: 0 15px 40px rgba(6,182,212,0.3);
         }
         .timeline, .skills, .projects, .certs {
           font-family: var(--mono);
@@ -162,8 +165,9 @@
           border-radius: var(--radius);
         }
         .job:hover {
+            transform: translateY(-2px); /* Subtle lift */
             background: rgba(6, 182, 212, 0.05);
-            box-shadow: 0 0 15px rgba(6,182,212,0.08);
+            box-shadow: 0 5px 20px rgba(6,182,212,0.15);
         }
         .meta{min-width:150px;color:var(--muted);font-size:13px}
         .job .meta strong{display:block;color:#fff}
@@ -194,7 +198,7 @@
           cursor:pointer;transition:transform .18s var(--ease), box-shadow .18s var(--ease);
           display:flex;flex-direction:column;gap:8px;
         }
-        .project:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(6,182,212,0.08)}
+        .project:hover{transform:translateY(-6px);box-shadow:0 18px 50px rgba(6,182,212,0.2)}
         .project .meta{font-weight:700;font-size:13px}
         .project p{margin:0;color:var(--muted);font-size:14px}
         .certs{display:flex;flex-wrap:wrap;gap:8px}
@@ -206,7 +210,8 @@
         .cert:hover {
             background: rgba(6,182,212,0.1);
             color: var(--accent);
-            transform: translateY(-2px);
+            transform: translateY(-5px) scale(1.10);
+            box-shadow: 0 15px 40px rgba(6,182,212,0.3);
         }
         .testimonials{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
         .quote{
@@ -217,17 +222,18 @@
         .quote:hover{
           transform:translateY(-4px);
           background:linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015));
-          box-shadow:0 12px 30px rgba(6,182,212,0.1);
+          box-shadow:0 14px 35px rgba(6,182,212,0.15); /* Stronger shadow */
         }
         form.contact{display:flex;flex-direction:column;gap:10px}
         form input, form textarea{
           background:transparent;border:1px solid rgba(255,255,255,0.04);padding:12px;border-radius:10px;color:#e6eef8;font-size:14px;
           resize:none;
-          transition: border-color .22s var(--ease), box-shadow .22s var(--ease);
+          transition: border-color .22s var(--ease), box-shadow .22s var(--ease), transform .22s var(--ease); /* Added transform to transition */
         }
         form input:hover, form textarea:hover {
             border-color: var(--accent);
             box-shadow: 0 0 10px rgba(6,182,212,0.2);
+            transform: scale(1.005); /* Very subtle zoom to feel responsive */
         }
         form input::placeholder, form textarea::placeholder{color:rgba(230,238,248,0.45)}
         .form-row{display:flex;gap:10px}
@@ -484,7 +490,7 @@
             <div>
                 <h2 style="margin:0 0 8px">Let's Connect</h2>
                 <p class="muted" style="margin:0 0 10px">Open to new roles, contract work, and collaborations in automation, QA strategy, and test engineering.</p>
-                <form id="contactForm" class="contact" onsubmit="handleContact(event)">
+                <form id="contactForm" class="contact" method="POST" data-netlify="true" name="contact">
                     <div class="form-row">
                         <input id="name" name="name" type="text" placeholder="Your name" required aria-label="Your name" />
                     </div>
