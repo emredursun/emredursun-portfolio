@@ -26,7 +26,7 @@
             "https://www.linkedin.com/in/emre-dursun-nl",
             "https://www.tiktok.com/@goforheartfeltjourney"
         ],
-        "description": "ISTQB® Certified SDET focused on automation frameworks, CI/CD, API & UI testing."
+        "description": "ISTQB® Certified SDET focused on automation frameworks, CI/CD, UI, API, & DB testing."
     }</script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
@@ -728,8 +728,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 70px;
-            height: 70px;
+            width: 110px;
+            height: 110px;
             padding: 8px;
             border-radius: var(--radius);
             background: rgba(255, 255, 255, 0.02);
@@ -744,11 +744,10 @@
             box-shadow: 0 8px 25px rgba(6, 182, 212, 0.2);
         }
 
-        .tech-icon svg {
-            width: 24px;
-            height: 24px;
-            /* Default color is white, will be overridden by icon's hex color */
-            color: #fff;
+        .tech-icon img.icon-img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
             transition: transform .2s var(--ease);
             margin-bottom: 4px;
         }
@@ -846,23 +845,23 @@
                     <h3>Languages & Core Tech</h3>
                     <div class="icon-stack">
                         <div class="tech-icon" title="Java">
-                            <svg data-icon="java"></svg>
+                            <img class="icon-img" src="images/java.png" alt="Java Icon" />
                             <span class="label">Java</span>
                         </div>
                         <div class="tech-icon" title="TypeScript">
-                            <svg data-icon="typescript"></svg>
+                            <img class="icon-img" src="images/typescript.png" alt="TypeScript Icon" />
                             <span class="label">TypeScript</span>
                         </div>
                         <div class="tech-icon" title="SQL (PostgreSQL)">
-                            <svg data-icon="postgresql"></svg>
+                            <img class="icon-img" src="images/sql.png" alt="SQL Icon" />
                             <span class="label">SQL</span>
                         </div>
                         <div class="tech-icon" title="HTML5">
-                            <svg data-icon="html5"></svg>
+                            <img class="icon-img" src="images/html.png" alt="HTML Icon" />
                             <span class="label">HTML</span>
                         </div>
                         <div class="tech-icon" title="CSS3">
-                            <svg data-icon="css3"></svg>
+                            <img class="icon-img" src="images/css.png" alt="CSS Icon" />
                             <span class="label">CSS</span>
                         </div>
                     </div>
@@ -872,23 +871,23 @@
                     <h3>Test Automation & Frameworks</h3>
                     <div class="icon-stack">
                         <div class="tech-icon" title="Playwright">
-                            <svg data-icon="playwright"></svg>
+                            <img class="icon-img" src="images/playwright.png" alt="Playwright Icon" />
                             <span class="label">Playwright</span>
                         </div>
                         <div class="tech-icon" title="Selenium">
-                            <svg data-icon="selenium"></svg>
+                            <img class="icon-img" src="images/selenium.png" alt="Selenium Icon" />
                             <span class="label">Selenium</span>
                         </div>
                         <div class="tech-icon" title="REST Assured">
-                            <svg data-icon="restapi"></svg>
+                            <img class="icon-img" src="images/restassured.png" alt="REST Assured Icon" />
                             <span class="label">REST Assured</span>
                         </div>
                         <div class="tech-icon" title="Cucumber">
-                            <svg data-icon="cucumber"></svg>
+                            <img class="icon-img" src="images/cucumber.png" alt="Cucumber Icon" />
                             <span class="label">Cucumber</span>
                         </div>
                         <div class="tech-icon" title="Postman">
-                            <svg data-icon="postman"></svg>
+                            <img class="icon-img" src="images/postman.png" alt="Postman Icon" />
                             <span class="label">Postman</span>
                         </div>
                     </div>
@@ -898,23 +897,23 @@
                     <h3>CI/CD & DevOps Tools</h3>
                     <div class="icon-stack">
                         <div class="tech-icon" title="Azure DevOps">
-                            <svg data-icon="azuredevops"></svg>
+                            <img class="icon-img" src="images/azuredevops.png" alt="Azure DevOps Icon" />
                             <span class="label">Azure DevOps</span>
                         </div>
                         <div class="tech-icon" title="Jenkins">
-                            <svg data-icon="jenkins"></svg>
+                            <img class="icon-img" src="images/jenkins.png" alt="Jenkins Icon" />
                             <span class="label">Jenkins</span>
                         </div>
                         <div class="tech-icon" title="Docker">
-                            <svg data-icon="docker"></svg>
+                            <img class="icon-img" src="images/docker.png" alt="Docker Icon" />
                             <span class="label">Docker</span>
                         </div>
                         <div class="tech-icon" title="Git">
-                            <svg data-icon="git"></svg>
+                            <img class="icon-img" src="images/git.png" alt="Git Icon" />
                             <span class="label">Git</span>
                         </div>
                         <div class="tech-icon" title="Maven">
-                            <svg data-icon="apachemaven"></svg>
+                            <img class="icon-img" src="images/maven.png" alt="Maven Icon" />
                             <span class="label">Maven</span>
                         </div>
                     </div>
@@ -1146,43 +1145,19 @@
     </main>
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-        try {
-            // Dynamically load the Simple Icons dataset as JSON (so all icon names are available)
-            const res = await fetch("https://cdn.jsdelivr.net/npm/simple-icons@11/icons.json");
-            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-            const iconsData = await res.json();
+    // Mobile menu toggle
+    const menuBtn = document.getElementById("menuBtn");
+    const nav = document.querySelector("nav");
 
-            document.querySelectorAll("svg[data-icon]").forEach(svg => {
-                const slug = svg.getAttribute("data-icon").toLowerCase();
-                const icon = iconsData.icons.find(i => i.slug === slug);
-
-                if (icon) {
-                    svg.innerHTML = icon.svg;
-                    // Use the brand color for the icon fill
-                    svg.style.fill = `#${icon.hex}`;
-                } else {
-                    console.warn(`Icon not found: ${slug}`);
-                }
-            });
-        } catch (err) {
-            console.error("Error loading icons:", err);
-        }
-
-        // Mobile menu toggle
-        const menuBtn = document.getElementById("menuBtn");
-        const nav = document.querySelector("nav");
-
-        if (menuBtn && nav) {
-            menuBtn.addEventListener("click", () => {
-                const isExpanded = menuBtn.getAttribute("aria-expanded") === "true";
-                menuBtn.setAttribute("aria-expanded", !isExpanded);
-                nav.style.display = isExpanded ? "none" : "flex";
-                // Optional: Add a class to style the mobile menu differently
-                nav.classList.toggle("mobile-menu", !isExpanded);
-            });
-        }
-    });
+    if (menuBtn && nav) {
+        menuBtn.addEventListener("click", () => {
+            const isExpanded = menuBtn.getAttribute("aria-expanded") === "true";
+            menuBtn.setAttribute("aria-expanded", !isExpanded);
+            nav.style.display = isExpanded ? "none" : "flex";
+            // Optional: Add a class to style the mobile menu differently
+            nav.classList.toggle("mobile-menu", !isExpanded);
+        });
+    }
 </script>
 
 </body>
