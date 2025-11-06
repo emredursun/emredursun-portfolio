@@ -265,24 +265,46 @@
             color: var(--muted);
             display: flex;
             flex-direction: column;
-            gap: 6px
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .contact-list > div {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .contact-list a {
             color: var(--muted);
             text-decoration: none;
-            display: block;
-            padding: 2px 4px;
-            margin: -2px -4px;
+            padding: 0;
+            margin: 0;
             border-radius: 4px;
-            transition: background .2s var(--ease)
+            transition: background .2s var(--ease);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .contact-list a:hover {
             color: #fff;
             background: rgba(6, 182, 212, 0.1);
-            transform: scale(1.02)
+            transform: scale(1.02);
+            padding: 2px 4px;
+            margin: -2px -4px;
         }
+
+        .contact-list i {
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
 
         .muted {
             color: var(--muted)
@@ -1165,18 +1187,18 @@
             <div style="font-weight:800">Emre Dursun</div>
             <div class="muted">ISTQB® Certified Full-Stack Automation Engineer</div>
 
-            <div class="contact-list" style="gap: 12px; margin-top: 10px;">
+            <div class="contact-list">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-map-marker-alt" style="color: var(--accent); font-size: 16px;"></i>
+                    <i class="fas fa-map-marker-alt"></i>
                     <span>Netherlands</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-phone" style="color: var(--accent); font-size: 16px;"></i>
+                    <i class="fas fa-phone"></i>
                     <span class="small muted">+31 6 2878 8948</span>
                 </div>
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-envelope" style="color: var(--accent); font-size: 16px;"></i>
-                    <a href="mailto:info.emredursun@gmail.com" style="color:var(--accent);text-decoration:none">info.emredursun@gmail.com</a>
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info.emredursun@gmail.com">info.emredursun@gmail.com</a>
                 </div>
             </div>
             <div style="display:flex;gap:8px;margin-top:10px"><a class="btn ghost" href="#experience">Resume</a><a
