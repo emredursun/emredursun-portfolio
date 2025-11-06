@@ -378,7 +378,13 @@
         .timeline {
             display: flex;
             flex-direction: column;
-            gap: 12px
+            gap: 12px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .timeline li {
+            list-style: none;
         }
 
         .timeline .job+.job {
@@ -450,7 +456,9 @@
             transition: transform .18s var(--ease), box-shadow .18s var(--ease);
             display: flex;
             flex-direction: column;
-            gap: 8px
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
         }
 
         .project:hover {
@@ -930,6 +938,18 @@
                             <img class="icon-img" src="images/playwright.png" alt="Playwright Icon"/>
                             <span class="label">Playwright</span>
                         </div>
+                        <div class="tech-icon" title="Cypress">
+                            <img class="icon-img" src="images/cypress.png" alt="Cypress Icon"/>
+                            <span class="label">Cypress</span>
+                        </div>
+                        <div class="tech-icon" title="JUnit">
+                            <img class="icon-img" src="images/junit.png" alt="JUnit Icon"/>
+                            <span class="label">JUnit</span>
+                        </div>
+                        <div class="tech-icon" title="TestNG">
+                            <img class="icon-img" src="images/testng.png" alt="TestNG Icon"/>
+                            <span class="label">TestNG</span>
+                        </div>
                         <div class="tech-icon" title="Selenium">
                             <img class="icon-img" src="images/selenium.png" alt="Selenium Icon"/>
                             <span class="label">Selenium</span>
@@ -978,24 +998,19 @@
             <section id="experience" class="card fade-in" aria-labelledby="experience-title">
                 <h2 id="experience-title">
                     Professional Experience</h2>
-                <div class="timeline stagger" style="margin-top:12px">
-                    <div class="job">
-                        <div class="meta"><strong>June 2023 - September 2025</strong><br>ING Bank / Sogyo IT</div>
+                <ol class="timeline stagger" style="margin-top:12px">
+                    <li class="job">
+                        <div class="meta"><strong>June 2023 - September 2025</strong><br>ING Bank</div>
                         <div class="desc">
-                            <div style="font-weight:700">Test Automation Engineer (PSS/True International
-                                Payments/Ch
-                                Dovetail)
+                            <div style="font-weight:700">Test Automation Engineer (PSS/True International Payments/Ch Dovetail)
                             </div>
                             <div class="small muted" style="margin-bottom:4px">Amsterdam/Utrecht, Netherlands</div>
-                            <p class="muted" style="margin:0 0 4px;font-size:14px">Designed and maintained scalable
-                                automation test frameworks using Java, Selenium, and Cucumber. Conducted UI, API,
-                                and
-                                database testing for multiple client projects. Executed functional/regression test
-                                cases, reported defects, and collaborated cross-functionally to ensure product
-                                quality.</p>
+                            <p class="muted" style="margin:0 0 4px;font-size:14px">
+                                Architected and maintained scalable automation test frameworks (Java, Selenium, REST Assured, Cucumber). Led UI, API, and DB testing for critical payment flows (PSS/TIP), reducing regression test time by 90% by integrating execution via Azure Pipelines. Consistently reported defects and collaborated with cross-functional teams to ensure high product quality and reliable releases.
+                            </p>
                         </div>
-                    </div>
-                    <div class="job">
+                    </li>
+                    <li class="job">
                         <div class="meta"><strong>June 2022 - June 2023</strong><br>TechPro Education</div>
                         <div class="desc">
                             <div style="font-weight:700">QA Automation Engineer (Part-Time)</div>
@@ -1005,8 +1020,8 @@
                                 CI/CD
                                 implementation and executed comprehensive functional and regression tests.</p>
                         </div>
-                    </div>
-                    <div class="job">
+                    </li>
+                    <li class="job">
                         <div class="meta"><strong>May 2021 - Jan 2023</strong><br>BSG Auto Parts & Nerex Motors
                         </div>
                         <div class="desc">
@@ -1017,13 +1032,13 @@
                                 ERP systems. Improved product search performance and visibility across online sales
                                 channels. Boosted online sales through strategic sponsored ad campaigns.</p>
                         </div>
-                    </div>
-                </div>
+                    </li>
+                </ol>
             </section>
             <section id="projects" class="card fade-in">
                 <h2>Projects & Highlights</h2>
                 <div class="projects" style="margin-top:12px">
-                    <article class="project" aria-labelledby="p1">
+                    <a href="#p1" class="project" aria-labelledby="p1">
                         <div id="p1" class="meta">TIP Test Center Framework (ING)</div>
                         <p>Architected and maintained FFV test validations for EPP and non-EPP international payment
                             flows using Java (Spring Boot/Merak) and Selenium/Cucumber. Integrated test execution
@@ -1035,8 +1050,8 @@
                             REST
                             Assured · Azure Pipelines · Scrum
                         </div>
-                    </article>
-                    <article class="project" aria-labelledby="p2">
+                    </a>
+                    <a href="#p2" class="project" aria-labelledby="p2">
                         <div id="p2" class="meta">Health System Automation Framework (Medunna)</div>
                         <p>Developed and managed automation frameworks for the Medunna Health Project. Executed
                             comprehensive functional and regression tests and integrated all test suites with
@@ -1045,8 +1060,8 @@
                         <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Java · Selenium ·
                             Cucumber · Jenkins
                         </div>
-                    </article>
-                    <article class="project" aria-labelledby="p3">
+                    </a>
+                    <a href="#p3" class="project" aria-labelledby="p3">
                         <div id="p3" class="meta">E-commerce Quality & ERP Testing</div>
                         <p>Conducted detailed manual testing for in-house ERP systems. Focused on quality assurance
                             while improving front-end product search performance and visibility across various
@@ -1054,14 +1069,14 @@
                         <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Manual Testing · ERP
                             Systems · E-commerce Strategy
                         </div>
-                    </article>
+                    </a>
                 </div>
             </section>
             <section id="education" class="card fade-in" aria-labelledby="education-title">
                 <h2 id="education-title">
                     Education</h2>
-                <div class="timeline stagger" style="margin-top:12px">
-                    <div class="job">
+                <ol class="timeline stagger" style="margin-top:12px">
+                    <li class="job">
                         <div class="meta"><strong>June 2022 - June 2023</strong><br>TechPro Education</div>
                         <div class="desc">
                             <div style="font-weight:700">Bachelor of Engineering - Full-Stack Automation Engineering
@@ -1075,8 +1090,8 @@
                                 Methodologies (Agile, Scrum, SDLC, QA Engineering, Test Planning), and more.
                             </p>
                         </div>
-                    </div>
-                    <div class="job">
+                    </li>
+                    <li class="job">
                         <div class="meta"><strong>September 2019 - April 2020</strong><br>ROC van Twente</div>
                         <div class="desc">
                             <div style="font-weight:700">Software Developer</div>
@@ -1088,8 +1103,8 @@
                                 CSS), and Object-Oriented Programming (OOP).
                             </p>
                         </div>
-                    </div>
-                    <div class="job">
+                    </li>
+                    <li class="job">
                         <div class="meta"><strong>October 2017 - March 2018</strong><br>HackYourFuture</div>
                         <div class="desc">
                             <div style="font-weight:700">Full-Stack Web Development</div>
@@ -1100,8 +1115,8 @@
                                 (OOP).
                             </p>
                         </div>
-                    </div>
-                    <div class="job">
+                    </li>
+                    <li class="job">
                         <div class="meta"><strong>September 2007 - July 2013</strong><br>Istanbul University</div>
                         <div class="desc">
                             <div style="font-weight:700">Bachelor of Applied Science - Mathematics</div>
@@ -1113,8 +1128,8 @@
                                 Abstract Reasoning, Systematic Problem Solving, and Data Analysis.
                             </p>
                         </div>
-                    </div>
-                </div>
+                    </li>
+                </ol>
             </section>
             <section id="certs" class="card fade-in" aria-labelledby="certs-title">
                 <h2 id="certs-title">
@@ -1208,7 +1223,11 @@
                 <h2 style="margin:0 0 8px">Let's Connect</h2>
                 <p class="muted" style="margin:0 0 10px">Open to new roles, contract work, and collaborations in
                     automation, QA strategy, and test engineering.</p>
-                <form id="contactForm" class="contact" method="POST" data-netlify="true" name="contact">
+                <form id="contactForm" 
+                      class="contact" 
+                      method="POST" 
+                      action="https://formspree.io/f/YOUR_FORMSPREE_HASH" 
+                      name="contact">
                     <div class="form-row"><input id="name" name="name" type="text" placeholder="Your name" required
                                                  aria-label="Your name"/></div>
                     <div class="form-row"><input id="email" name="email" type="email" placeholder="Your email"
@@ -1239,6 +1258,57 @@
             nav.style.display = isExpanded ? "none" : "flex";
             // Optional: Add a class to style the mobile menu differently
             nav.classList.toggle("mobile-menu", !isExpanded);
+        });
+
+        // FIXED: Close mobile menu when a navigation link is clicked (B3)
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                // Check if the screen width indicates a mobile view where the menu might be open (based on CSS breakpoint of 820px)
+                if (window.innerWidth <= 820) { 
+                    const nav = document.querySelector("nav");
+                    if (nav.classList.contains('mobile-menu') && nav.style.display === 'flex') {
+                        // Simulate a click on the menu button to toggle/close the menu
+                        menuBtn.click();
+                    }
+                }
+            });
+        });
+    }
+
+    // FIXED: Form submission handling for GitHub Pages (B1)
+    const form = document.getElementById('contactForm');
+    const formResult = document.getElementById('formResult');
+
+    if (form && formResult) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = new FormData(e.target);
+            
+            // Indicate submission status
+            formResult.textContent = 'Sending...'; 
+            formResult.style.color = '#06b6d4'; // Use accent color for status
+
+            try {
+                const response = await fetch(e.target.action, {
+                    method: form.method,
+                    body: data,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    formResult.textContent = 'Thank you! Your message has been sent.';
+                    formResult.style.color = '#10b981'; // Green for success
+                    form.reset();
+                } else {
+                    formResult.textContent = 'Oops! There was an error sending your message. Please use the direct email link.';
+                    formResult.style.color = '#ef4444'; // Red for error
+                }
+            } catch (error) {
+                formResult.textContent = 'Oops! A network error occurred. Please use the direct email link.';
+                formResult.style.color = '#ef4444'; // Red for error
+            }
         });
     }
 </script>
