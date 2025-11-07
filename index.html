@@ -36,6 +36,10 @@
           integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         :root {
             --bg: #07101a;
             --panel: rgba(255, 255, 255, 0.01);
@@ -48,7 +52,22 @@
             --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
             --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
             --ease: cubic-bezier(.2, .9, .2, 1);
-            color-scheme: dark
+            --text-color: #e6eef8;
+            --bg-color: #04121a;
+            --card-bg: var(--glass);
+            color-scheme: dark;
+        }
+
+        body.light-mode {
+            --text-color: #333;
+            --bg: #f7f7f7;
+            --bg-color: #ffffff;
+            --card-bg: #f5f5f5;
+            --glass: rgba(0, 0, 0, 0.03);
+            --muted: #6b7280;
+            --accent: #05889b;
+            --accent-2: #d88e33;
+            color-scheme: light;
         }
 
         * {
@@ -63,14 +82,18 @@
         body {
             margin: 0;
             font-family: var(--sans);
-            background: radial-gradient(1200px 600px at 10% 10%, rgba(6, 182, 212, 0.035), transparent 6%), radial-gradient(800px 400px at 95% 90%, rgba(246, 160, 61, 0.02), transparent 6%), linear-gradient(180deg, var(--bg) 0%, #04121a 100%);
-            color: #e6eef8;
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(6, 182, 212, 0.035), transparent 6%), radial-gradient(800px 400px at 95% 90%, rgba(246, 160, 61, 0.02), transparent 6%), linear-gradient(180deg, var(--bg) 0%, var(--bg-color) 100%);
+            color: var(--text-color);
             -webkit-font-smoothing: antialiased;
             -moz-osx-webkit-font-smoothing: grayscale;
             line-height: 1.5;
             padding: 28px 18px;
             display: flex;
             justify-content: center
+        }
+
+        body.light-mode {
+            background: var(--bg-color);
         }
 
         .container {
@@ -156,6 +179,37 @@
             transform: translateY(-1px) scale(1.01)
         }
 
+        #theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--card-bg);
+            color: var(--muted);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 20px;
+            box-shadow: 0 5px 20px rgba(2, 6, 23, 0.5);
+            transition: all .2s var(--ease);
+            padding: 0;
+        }
+        #theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        body.light-mode #theme-toggle {
+            border-color: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
         .menu-toggle {
             display: none;
             border: 1px solid rgba(255, 255, 255, 0.03);
@@ -164,6 +218,12 @@
             border-radius: 10px;
             color: var(--muted);
             cursor: pointer
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
         }
 
         main {
@@ -183,6 +243,10 @@
             -webkit-backdrop-filter: blur(8px)
         }
 
+        body.light-mode .card {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+        }
+
         .card:hover {
             transform: translateY(-4px);
             box-shadow: 0 15px 50px rgba(6, 182, 212, 0.2),
@@ -198,6 +262,12 @@
         .lead {
             color: var(--muted);
             margin: 0 0 14px
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
         }
 
         .cta {
@@ -232,12 +302,16 @@
             color: var(--accent)
         }
 
+        body.light-mode .btn.ghost {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
         .btn.ghost:hover {
             background: linear-gradient(90deg, var(--accent), var(--accent-2));
-            color: #041018; /* Dark text */
+            color: #041018;
             transform: translateY(-4px);
             box-shadow: 0 12px 35px rgba(6, 182, 212, 0.15);
-            border: none; /* Remove the ghost border on hover */
+            border: none;
         }
 
         .btn:hover {
@@ -266,11 +340,30 @@
             box-shadow: inset 0 -10px 40px rgba(0, 0, 0, 0.5)
         }
 
+        body.light-mode .photo {
+            background: linear-gradient(180deg, #eee, #fff);
+            box-shadow: inset 0 -10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+
         .photo img {
             width: 250px;
             height: 250px;
             border-radius: 12px;
             object-fit: cover
+        }
+
+        .social-icons-row {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 8px;
+        }
+
+        .social-icons-row a i {
+            font-size: 24px;
+            color: var(--muted);
+            transition: color .2s var(--ease), transform .2s var(--ease);
         }
 
         .contact-list {
@@ -301,11 +394,15 @@
         }
 
         .contact-list a:hover {
-            color: #fff;
+            color: var(--text-color);
             background: rgba(6, 182, 212, 0.1);
             transform: scale(1.02);
             padding: 2px 4px;
             margin: -2px -4px;
+        }
+
+        body.light-mode .contact-list a:hover {
+             color: var(--accent);
         }
 
         .contact-list i {
@@ -316,6 +413,16 @@
             align-items: center;
             justify-content: center;
             color: var(--accent);
+        }
+
+        .margin-top-small {
+            margin-top: 10px;
+        }
+
+        .separator {
+            border: none;
+            border-top: 1px solid rgba(255, 255, 255, 0.03);
+            margin: 12px 0;
         }
 
 
@@ -408,6 +515,10 @@
             margin-top: 4px
         }
 
+        body.light-mode .timeline .job+.job {
+            border-top: 1px dashed rgba(0, 0, 0, 0.12);
+        }
+
         .job {
             display: flex;
             gap: 12px;
@@ -431,7 +542,7 @@
 
         .job .meta strong {
             display: block;
-            color: #fff
+            color: var(--text-color);
         }
 
         .job .desc {
@@ -476,11 +587,22 @@
             color: inherit;
         }
 
+        body.light-mode .project {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+
         .project:hover {
             transform: translateY(-6px);
             box-shadow: 0 18px 50px rgba(6, 182, 212, 0.2),
                         0 0 15px rgba(246, 160, 61, 0.15);
         }
+
+        body.light-mode .project:hover {
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
 
         .project .meta {
             font-weight: 700;
@@ -491,6 +613,11 @@
             margin: 0;
             color: var(--muted);
             font-size: 14px
+        }
+
+        .project-meta {
+            margin-top:auto;
+            font-weight:700;
         }
 
         .certs {
@@ -540,6 +667,17 @@
                         0 0 5px rgba(246, 160, 61, 0.1);
         }
 
+        body.light-mode .quote {
+            background: var(--card-bg);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-mode .quote:hover {
+            background: var(--glass);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+
         form.contact {
             display: flex;
             flex-direction: column;
@@ -552,11 +690,18 @@
             border: 1px solid rgba(255, 255, 255, 0.04);
             padding: 12px;
             border-radius: 10px;
-            color: #e6eef8;
+            color: var(--text-color);
             font-size: 14px;
             resize: none;
             transition: border-color .22s var(--ease), box-shadow .22s var(--ease), transform .22s var(--ease)
         }
+
+        body.light-mode form input,
+        body.light-mode form textarea {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: #fff;
+        }
+
 
         form input:hover,
         form textarea:hover {
@@ -565,9 +710,15 @@
             transform: scale(1.005)
         }
 
+        body.light-mode form input:hover,
+        body.light-mode form textarea:hover {
+            box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+        }
+
+
         form input::placeholder,
         form textarea::placeholder {
-            color: rgba(230, 238, 248, 0.45)
+            color: var(--muted);
         }
 
         .form-row {
@@ -701,6 +852,10 @@
                 display: none
             }
 
+            nav.mobile-menu--active {
+                display: flex !important;
+            }
+
             .menu-toggle {
                 display: inline-flex
             }
@@ -760,6 +915,10 @@
                 padding-top: 8px;
                 margin-top: 4px
             }
+
+            body.light-mode .job .desc {
+                border-top: 1px dashed rgba(0, 0, 0, 0.1);
+            }
         }
 
         @media (max-width:420px) {
@@ -788,7 +947,7 @@
 
         .skill-group>h3 {
             font-size: 14px;
-            color: #fff;
+            color: var(--text-color);
             margin: 0 0 8px 0;
             font-weight: 700;
         }
@@ -809,7 +968,7 @@
             height: 110px;
             padding: 8px;
             border-radius: var(--radius);
-            background: rgba(255, 255, 255, 0.02);
+            background: var(--glass);
             transition: all .2s var(--ease);
             cursor: pointer;
             position: relative;
@@ -840,8 +999,7 @@
             max-width: 100%;
         }
 
-        /* Styles for the mobile navigation menu */
-        .mobile-menu {
+        nav.mobile-menu--active {
             flex-direction: column;
             align-items: stretch;
             gap: 0;
@@ -857,12 +1015,12 @@
             z-index: 10;
         }
 
-        .mobile-menu a {
+        nav.mobile-menu--active a {
             padding: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .mobile-menu a:last-child {
+        nav.mobile-menu--active a:last-child {
             border-bottom: none;
         }
 
@@ -875,6 +1033,9 @@
 </head>
 
 <body>
+<button id="theme-toggle" aria-label="Toggle light and dark mode">
+    <i class="fas fa-sun"></i>
+</button>
 <div class="container">
     <header>
         <div class="brand">
@@ -885,7 +1046,7 @@
             </div>
         </div>
         <nav aria-label="Primary navigation">
-            <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 12px; align-items: center;">
+            <ul>
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
@@ -910,10 +1071,7 @@
                         contributing to high-quality releases in Agile teams across banking, healthcare, and
                         e-commerce
                         domains. Fluent in Dutch, English, and Turkish (native).</p>
-                    <div style="display:flex;gap:12px;align-items:center" class="fade-in"><a class="btn primary"
-                                                                                             href="#projects">See My
-                        Work</a><a class="btn ghost" href="mailto:info.emredursun@gmail.com">Contact Me</a>
-                    </div>
+                    <div class="cta-group fade-in"><a class="btn primary" href="#projects">See My Work</a><a class="btn ghost" href="mailto:info.emredursun@gmail.com">Contact Me</a></div>
                 </div>
             </section>
             <section id="about" class="card fade-in">
@@ -921,7 +1079,7 @@
                 <p class="muted">Driven by precision, powered by curiosity. I transform manual testing corridors
                     into
                     automated, repeatable systems so teams have clear feedback and confidence to ship.</p>
-                <p style="margin-top:10px">I’ve worked across banking and e-commerce domains building API & UI
+                <p class="margin-top-small">I’ve worked across banking and e-commerce domains building API & UI
                     automation, resilient test pipelines, and observability to help teams scale testing without
                     slowing
                     delivery. I enjoy breaking complex flows into simple, testable parts and collaborating
@@ -1071,7 +1229,7 @@
                             Maven and Azure Pipelines for fast CI/CD feedback, and used REST Assured for critical
                             API
                             testing.</p>
-                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Java · Spring Boot ·
+                        <div class="small muted project-meta">Tech: Java · Spring Boot ·
                             REST
                             Assured · Azure Pipelines · Scrum
                         </div>
@@ -1082,7 +1240,7 @@
                             comprehensive functional and regression tests and integrated all test suites with
                             Jenkins
                             for robust CI/CD implementation.</p>
-                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Java · Selenium ·
+                        <div class="small muted project-meta">Tech: Java · Selenium ·
                             Cucumber · Jenkins
                         </div>
                     </a>
@@ -1091,7 +1249,7 @@
                         <p>Conducted detailed manual testing for in-house ERP systems. Focused on quality assurance
                             while improving front-end product search performance and visibility across various
                             high-volume sales platforms.</p>
-                        <div class="small muted" style="margin-top:auto;font-weight:700">Tech: Manual Testing · ERP
+                        <div class="small muted project-meta">Tech: Manual Testing · ERP
                             Systems · E-commerce Strategy
                         </div>
                     </a>
@@ -1176,7 +1334,7 @@
                 <h2 id="testimonials-title">Testimonials</h2>
                 <div
                         style="padding:14px 14px 18px 14px; margin-bottom: 12px; border-radius:var(--radius); background: linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));">
-                    <h3 style="margin:0 0 10px; font-size:16px; font-weight:700; color:#fff;">ING Team Farewell
+                    <h3 style="margin:0 0 10px; font-size:16px; font-weight:700; color:var(--text-color);">ING Team Farewell
                         Card</h3>
                     <img src="images/ING_Colleagues.png"
                          alt="A combined image of two farewell cards from ING colleagues, featuring handwritten messages and signatures."
@@ -1208,48 +1366,47 @@
                      loading="lazy"/>
             </div>
 
-            <div class="social-icons-row"
-                 style="display: flex; justify-content: center; gap: 25px; margin-bottom: 8px;">
+            <div class="social-icons-row">
                 <a href="https://www.linkedin.com/in/emre-dursun-nl" target="_blank" rel="noopener"
                    aria-label="LinkedIn">
-                    <i class="fab fa-linkedin-in" style="font-size: 24px; color: var(--muted);"></i>
+                    <i class="fab fa-linkedin-in"></i>
                 </a>
                 <a href="https://github.com/emredursun" target="_blank" rel="noopener" aria-label="GitHub">
-                    <i class="fab fa-github" style="font-size: 24px; color: var(--muted);"></i>
+                    <i class="fab fa-github"></i>
                 </a>
                 <a href="mailto:info.emredursun@gmail.com" aria-label="Email">
-                    <i class="fas fa-at" style="font-size: 24px; color: var(--muted);"></i>
+                    <i class="fas fa-at"></i>
                 </a>
                 <a href="https://wa.me/31628788948" target="_blank" rel="noopener" aria-label="WhatsApp">
-                    <i class="fab fa-whatsapp" style="font-size: 24px; color: var(--muted);"></i>
+                    <i class="fab fa-whatsapp"></i>
                 </a>
                 <a href="https://www.instagram.com/trueheartfeltjourney/" target="_blank" rel="noopener"
                    aria-label="Instagram">
-                    <i class="fab fa-instagram" style="font-size: 24px; color: var(--muted);"></i>
+                    <i class="fab fa-instagram"></i>
                 </a>
             </div>
-            <div style="font-weight:800">Emre Dursun</div>
+            <div style="font-weight:800; color: var(--text-color);">Emre Dursun</div>
             <div class="muted">ISTQB® Certified Full-Stack Automation Engineer</div>
 
             <div class="contact-list">
-                <div style="display: flex; align-items: center; gap: 8px;">
+                <div>
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Netherlands</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px;">
+                <div>
                     <i class="fas fa-phone"></i>
                     <span class="small muted">+31 6 2878 8948</span>
                 </div>
-                <div style="display: flex; align-items: center; gap: 8px;">
+                <div>
                     <i class="fas fa-envelope"></i>
                     <a href="mailto:info.emredursun@gmail.com">info.emredursun@gmail.com</a>
                 </div>
             </div>
-            <div style="display:flex;gap:8px;margin-top:10px"><a class="btn ghost" href="#experience">Resume</a><a
+            <div class="button-group"><a class="btn ghost" href="#experience">Resume</a><a
                     class="btn ghost" href="/CV.pdf" target="_blank">Download CV</a></div>
-            <hr style="border:none;border-top:1px solid rgba(255,255,255,0.03);margin:12px 0">
+            <hr class="separator">
             <div id="contact">
-                <h2 style="margin:0 0 8px">Let's Connect</h2>
+                <h2 style="margin:0 0 8px; color: var(--text-color);">Let's Connect</h2>
                 <p class="muted" style="margin:0 0 10px">Open to new roles, contract work, and collaborations in
                     automation, QA strategy, and test engineering.</p>
                 <form id="contactForm"
@@ -1276,26 +1433,26 @@
     </main>
 </div>
 <script>
-    // Mobile menu toggle
+    // Mobile menu toggle and state management
     const menuBtn = document.getElementById("menuBtn");
     const nav = document.querySelector("nav");
 
     if (menuBtn && nav) {
         menuBtn.addEventListener("click", () => {
             const isExpanded = menuBtn.getAttribute("aria-expanded") === "true";
-            menuBtn.setAttribute("aria-expanded", !isExpanded);
-            nav.style.display = isExpanded ? "none" : "flex";
-            // Optional: Add a class to style the mobile menu differently
-            nav.classList.toggle("mobile-menu", !isExpanded);
+            const newState = !isExpanded;
+            menuBtn.setAttribute("aria-expanded", newState);
+            // BETTER: Toggle a CSS class instead of manipulating style.display
+            nav.classList.toggle("mobile-menu--active", newState);
         });
 
-        // FIXED: Close mobile menu when a navigation link is clicked (B3)
+        // Close mobile menu when a navigation link is clicked
         document.querySelectorAll('nav a').forEach(link => {
             link.addEventListener('click', () => {
-                // Check if the screen width indicates a mobile view where the menu might be open (based on CSS breakpoint of 820px)
+                // Check if the screen width indicates a mobile view (based on CSS breakpoint of 820px)
                 if (window.innerWidth <= 820) {
-                    const nav = document.querySelector("nav");
-                    if (nav.classList.contains('mobile-menu') && nav.style.display === 'flex') {
+                    // Check if the menu is open (using the new class)
+                    if (nav.classList.contains('mobile-menu--active')) {
                         // Simulate a click on the menu button to toggle/close the menu
                         menuBtn.click();
                     }
@@ -1304,20 +1461,25 @@
         });
     }
 
-    // FIXED: Form submission handling for GitHub Pages (B1)
+    // Form submission handling with UX improvement
     const form = document.getElementById('contactForm');
     const formResult = document.getElementById('formResult');
+    const submitButton = form ? form.querySelector('button[type="submit"]') : null;
 
-    if (form && formResult) {
+    if (form && formResult && submitButton) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const data = new FormData(e.target);
 
-            // Indicate submission status
+            // UX FIX: Disable the button during submission
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+
             formResult.textContent = 'Sending...';
             formResult.style.color = '#06b6d4'; // Use accent color for status
 
             try {
+                // NOTE: The Formspree hash (YOUR_FORMSPREE_HASH) must be configured in production.
                 const response = await fetch(e.target.action, {
                     method: form.method,
                     body: data,
@@ -1337,9 +1499,59 @@
             } catch (error) {
                 formResult.textContent = 'Oops! A network error occurred. Please use the direct email link.';
                 formResult.style.color = '#ef4444'; // Red for error
+            } finally {
+                // UX FIX: Re-enable the button and reset text
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send message';
             }
         });
     }
+
+    /* Complete theme toggle logic with localStorage and icon change */
+    document.addEventListener('DOMContentLoaded', () => {
+        const toggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = toggleButton.querySelector('i');
+        const themeKey = 'portfolio-theme';
+
+        // Function to apply the theme class and icon
+        function applyTheme(theme) {
+            if (theme === 'light-mode') {
+                body.classList.add('light-mode');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon'); // Show moon icon when in light mode (to switch to dark)
+            } else {
+                body.classList.remove('light-mode');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun'); // Show sun icon when in dark mode (to switch to light)
+            }
+        }
+
+        // 1. Check for saved preference on load
+        const savedTheme = localStorage.getItem(themeKey);
+
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        } else {
+            // Default to dark mode if no preference is saved (since the site is dark by default)
+            applyTheme('dark-mode');
+        }
+
+        // 2. Add click listener to toggle theme
+        toggleButton.addEventListener('click', () => {
+            const isLight = body.classList.contains('light-mode');
+
+            if (isLight) {
+                // Currently light, switch to Dark Mode
+                applyTheme('dark-mode');
+                localStorage.setItem(themeKey, 'dark-mode');
+            } else {
+                // Currently dark, switch to Light Mode
+                applyTheme('light-mode');
+                localStorage.setItem(themeKey, 'light-mode');
+            }
+        });
+    });
 </script>
 
 </body>
