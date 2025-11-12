@@ -32,7 +32,24 @@
     <!-- Canonical -->
     <link rel="canonical" href="https://emredursun.nl" />
 
-    <!-- JSON-LD Structured Data -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -62,16 +79,6 @@
             }
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
-          integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"> <link rel="shortcut icon" href="/favicon.ico">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-config" content="/browserconfig.xml"> <meta name="theme-color" content="#ffffff">
     <style>
         html {
             scroll-behavior: smooth;
@@ -119,7 +126,7 @@
         body {
             margin: 0;
             font-family: var(--sans);
-            background: radial-gradient(1200px 600px at 10% 10%, rgba(6, 182, 212, 0.035), transparent 6%), radial-gradient(800px 400px at 95% 90%, rgba(246, 160, 61, 0.02), transparent 6%), linear-gradient(180deg, var(--bg) 0%, var(--bg-color) 100%);
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(6, 182, 212, 0.035), transparent 60%), radial-gradient(800px 400px at 95% 90%, rgba(246, 160, 61, 0.02), transparent 60%), linear-gradient(180deg, var(--bg) 0%, var(--bg-color) 100%);
             color: var(--text-color);
             -webkit-font-smoothing: antialiased;
             -moz-osx-webkit-font-smoothing: grayscale;
@@ -180,6 +187,12 @@
             margin-top: 2px
         }
 
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
         nav ul {
             list-style: none;
             padding: 0;
@@ -216,6 +229,63 @@
             transform: translateY(-1px) scale(1.01)
         }
 
+        .menu-toggle {
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: transparent;
+            padding: 8px;
+            border-radius: 10px;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        nav.mobile-menu--active {
+            display: flex !important;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            width: 100%;
+            position: absolute;
+            top: 92px;
+            left: 0;
+            background: var(--bg);
+            padding: 0;
+            border-radius: 0;
+            box-shadow: 0 10px 40px rgba(2, 6, 23, 0.6);
+            z-index: 10;
+        }
+
+        nav.mobile-menu--active ul {
+            flex-direction: column;
+            gap: 0;
+            width: 100%;
+        }
+
+        nav.mobile-menu--active li {
+            width: 100%;
+        }
+
+        nav.mobile-menu--active a {
+            display: block;
+            padding: 16px 20px;
+            border-radius: 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        nav.mobile-menu--active a.primary {
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            color: #041018;
+            border: none;
+        }
+
+        nav.mobile-menu--active li:last-child a {
+            border-bottom: none;
+        }
+
         #theme-toggle {
             position: fixed;
             bottom: 20px;
@@ -235,7 +305,9 @@
             box-shadow: 0 5px 20px rgba(2, 6, 23, 0.5);
             transition: all .2s var(--ease);
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
+
         #theme-toggle:hover {
             transform: scale(1.1);
             border-color: var(--accent);
@@ -245,22 +317,6 @@
         body.light-mode #theme-toggle {
             border-color: rgba(0, 0, 0, 0.1);
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .menu-toggle {
-            display: none;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            background: transparent;
-            padding: 8px;
-            border-radius: 10px;
-            color: var(--muted);
-            cursor: pointer
-        }
-
-        .button-group {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
         }
 
         main {
@@ -287,7 +343,7 @@
         .card:hover {
             transform: translateY(-4px);
             box-shadow: 0 15px 50px rgba(6, 182, 212, 0.2),
-                        0 0 0 1px var(--accent),
+                        0 0 0 2px var(--accent),
                         0 0 15px rgba(246, 160, 61, 0.2);
         }
 
@@ -324,7 +380,8 @@
             border: none;
             text-decoration: none;
             color: inherit;
-            transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s var(--ease)
+            transition: transform .18s var(--ease), box-shadow .18s var(--ease), background .18s var(--ease);
+            outline-offset: 3px;
         }
 
         .btn.primary {
@@ -403,6 +460,18 @@
             transition: color .2s var(--ease), transform .2s var(--ease);
         }
 
+        .social-icons-row a:hover i {
+            color: var(--accent) !important;
+            transform: scale(1.3);
+            transition: color .2s var(--ease), transform .2s var(--ease);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
         .contact-list {
             font-size: 14px;
             color: var(--muted);
@@ -452,6 +521,15 @@
             color: var(--accent);
         }
 
+        section {
+            margin-top: 18px
+        }
+
+        h2 {
+            font-size: 16px;
+            margin: 0 0 10px
+        }
+
         .margin-top-small {
             margin-top: 10px;
         }
@@ -462,7 +540,6 @@
             margin: 12px 0;
         }
 
-
         .muted {
             color: var(--muted)
         }
@@ -470,41 +547,6 @@
         .small {
             font-size: 13px;
             color: var(--muted)
-        }
-
-        section {
-            margin-top: 18px
-        }
-
-        h2 {
-            font-size: 16px;
-            margin: 0 0 10px
-        }
-
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px
-        }
-
-        .badge {
-            padding: 8px 10px;
-            border-radius: 8px;
-            background: var(--glass);
-            font-weight: 700;
-            color: var(--muted);
-            font-size: 13px;
-            transition: all .14s var(--ease);
-            cursor: pointer
-        }
-
-        .badge:hover {
-            background: rgba(6, 182, 212, 0.1);
-            color: var(--accent);
-            transform: translateY(-5px) scale(1.10);
-            box-shadow: 0 15px 40px rgba(6, 182, 212, 0.3),
-                        0 0 0 2px var(--accent),
-                        0 0 15px rgba(246, 160, 61, 0.3);
         }
 
         .timeline,
@@ -530,16 +572,13 @@
             font-size: 13px
         }
 
-        .project p {
-            font-size: 13px
-        }
-
         .timeline {
             display: flex;
             flex-direction: column;
             gap: 12px;
             list-style: none;
             padding: 0;
+            margin-top: 12px;
         }
 
         .timeline li {
@@ -605,10 +644,87 @@
             position: relative
         }
 
+        .job .desc-title {
+            font-weight: 700;
+        }
+
+        .job .desc-meta {
+            margin-bottom: 4px;
+        }
+
+        .job .desc-text {
+            margin: 0 0 4px;
+            font-size: 14px;
+        }
+
+        .job .desc-skills {
+            margin: 4px 0 4px;
+            font-size: 14px;
+        }
+
+        .skill-group {
+            margin-top: 15px;
+        }
+
+        .skill-group>h3 {
+            font-size: 14px;
+            color: var(--text-color);
+            margin: 0 0 8px 0;
+            font-weight: 700;
+        }
+
+        .icon-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tech-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 110px;
+            height: 110px;
+            padding: 8px;
+            border-radius: var(--radius);
+            background: var(--glass);
+            transition: all .2s var(--ease);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tech-icon:hover {
+            transform: translateY(-4px) scale(1.05);
+            background: rgba(6, 182, 212, 0.1);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.2), 0 0 10px rgba(246, 160, 61, 0.1);
+        }
+
+        .tech-icon img.icon-img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            transition: transform .2s var(--ease);
+            margin-bottom: 4px;
+        }
+
+        .tech-icon .label {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 600;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
         .projects {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px
+            gap: 12px;
+            margin-top: 12px;
         }
 
         .project {
@@ -629,7 +745,6 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
 
-
         .project:hover {
             transform: translateY(-6px);
             box-shadow: 0 18px 50px rgba(6, 182, 212, 0.2),
@@ -639,7 +754,6 @@
         body.light-mode .project:hover {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-
 
         .project .meta {
             font-weight: 700;
@@ -661,6 +775,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+            margin-top: 10px;
         }
         .cert {
             background: var(--glass);
@@ -681,10 +796,35 @@
                         0 0 15px rgba(246, 160, 61, 0.3);
         }
 
+        .testimonials-group {
+            padding:14px 14px 18px 14px;
+            margin-bottom: 12px;
+            border-radius:var(--radius);
+            background: linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+        }
+        .testimonials-group h3 {
+            margin:0 0 10px;
+            font-size:16px;
+            font-weight:700;
+            color:var(--text-color);
+        }
+        .testimonials-group img {
+            width:100%;
+            height:auto;
+            display:block;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .testimonials-group .small {
+            margin-top:8px;
+            text-align:center;
+        }
+
         .testimonials {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px
+            gap: 12px;
+            margin-top: 10px;
         }
 
         .quote {
@@ -714,6 +854,9 @@
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
+        .quote .small {
+             margin-top: 8px;
+        }
 
         form.contact {
             display: flex;
@@ -767,6 +910,24 @@
             flex: 1
         }
 
+        .form-actions {
+            display:flex;
+            gap:8px;
+        }
+
+        .form-result {
+            margin-top: 8px;
+        }
+
+        .contact-header {
+            margin:0 0 8px;
+            color: var(--text-color);
+        }
+
+        .contact-intro {
+            margin:0 0 10px;
+        }
+
         footer {
             margin-top: 26px;
             text-align: center;
@@ -789,39 +950,30 @@
         .stagger>*:nth-child(1) {
             animation: staggerIn .5s .08s forwards
         }
-
         .stagger>*:nth-child(2) {
             animation: staggerIn .5s .16s forwards
         }
-
         .stagger>*:nth-child(3) {
             animation: staggerIn .5s .24s forwards
         }
-
         .stagger>*:nth-child(4) {
             animation: staggerIn .5s .32s forwards
         }
-
         .stagger>*:nth-child(5) {
             animation: staggerIn .5s .40s forwards
         }
-
         .stagger>*:nth-child(6) {
             animation: staggerIn .5s .48s forwards
         }
-
         .stagger>*:nth-child(7) {
             animation: staggerIn .5s .56s forwards
         }
-
         .stagger>*:nth-child(8) {
             animation: staggerIn .5s .64s forwards
         }
-
         .stagger>*:nth-child(9) {
             animation: staggerIn .5s .72s forwards
         }
-
         .stagger>*:nth-child(10) {
             animation: staggerIn .5s .80s forwards
         }
@@ -854,7 +1006,23 @@
             }
         }
 
+        a:focus,
+        button:focus,
+        input:focus,
+        textarea:focus {
+            outline: 3px solid rgba(6, 182, 212, 0.14);
+            outline-offset: 3px
+        }
+
         @media (max-width:1000px) {
+            nav {
+                display: none !important;
+            }
+
+            .menu-toggle {
+                display: inline-flex;
+            }
+
             main {
                 grid-template-columns: 1fr 320px
             }
@@ -883,18 +1051,6 @@
             header {
                 align-items: flex-start;
                 gap: 10px
-            }
-
-            nav {
-                display: none
-            }
-
-            nav.mobile-menu--active {
-                display: flex !important;
-            }
-
-            .menu-toggle {
-                display: inline-flex
             }
 
             main {
@@ -968,104 +1124,6 @@
                 height: 48px
             }
         }
-
-        a:focus,
-        button:focus,
-        input:focus,
-        textarea:focus {
-            outline: 3px solid rgba(6, 182, 212, 0.14);
-            outline-offset: 3px
-        }
-
-        /* NEW CSS FOR ICON STACK */
-        .skill-group {
-            margin-top: 15px;
-        }
-
-        .skill-group>h3 {
-            font-size: 14px;
-            color: var(--text-color);
-            margin: 0 0 8px 0;
-            font-weight: 700;
-        }
-
-        .icon-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .tech-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 110px;
-            height: 110px;
-            padding: 8px;
-            border-radius: var(--radius);
-            background: var(--glass);
-            transition: all .2s var(--ease);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .tech-icon:hover {
-            transform: translateY(-4px) scale(1.05);
-            background: rgba(6, 182, 212, 0.1);
-            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.2), 0 0 10px rgba(246, 160, 61, 0.1);
-        }
-
-        .tech-icon img.icon-img {
-            width: 64px;
-            height: 64px;
-            object-fit: contain;
-            transition: transform .2s var(--ease);
-            margin-bottom: 4px;
-        }
-
-        .tech-icon .label {
-            font-size: 11px;
-            color: var(--muted);
-            font-weight: 600;
-            line-height: 1.2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 100%;
-        }
-
-        nav.mobile-menu--active {
-            flex-direction: column;
-            align-items: stretch;
-            gap: 0;
-            width: 100%;
-            position: absolute;
-            top: 100px;
-            /* Adjust as needed */
-            left: 0;
-            background: var(--bg);
-            padding: 12px;
-            border-radius: var(--radius);
-            box-shadow: 0 10px 40px rgba(2, 6, 23, 0.6);
-            z-index: 10;
-        }
-
-        nav.mobile-menu--active a {
-            padding: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        nav.mobile-menu--active a:last-child {
-            border-bottom: none;
-        }
-
-        .social-icons-row a:hover i {
-            color: var(--accent) !important;
-            transform: scale(1.3);
-            transition: color .2s var(--ease), transform .2s var(--ease);
-        }
     </style>
 </head>
 
@@ -1083,16 +1141,18 @@
             </div>
         </div>
         <nav aria-label="Primary navigation">
-            <ul>
+            <ul id="main-nav-list">
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#certs">Certifications</a></li>
                 <li><a href="#education">Education</a></li>
-                <li><a href="#contact" class="primary">Contact</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
-        <button class="menu-toggle" aria-controls="mobile-menu" aria-expanded="false" id="menuBtn">Menu</button>
+        <button class="menu-toggle" aria-controls="mobile-menu" aria-expanded="false" id="menuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
     </header>
     <main>
         <div>
@@ -1108,7 +1168,10 @@
                         contributing to high-quality releases in Agile teams across banking, healthcare, and
                         e-commerce
                         domains. Fluent in Dutch, English, and Turkish (native).</p>
-                    <div class="cta-group fade-in"><a class="btn primary" href="#projects">See My Work</a><a class="btn ghost" href="mailto:info.emredursun@gmail.com">Contact Me</a></div>
+                    <div class="cta-group fade-in">
+                        <a class="btn primary" href="#projects">See My Work</a>
+                        <a class="btn ghost" href="#profile-card">Contact Me</a>
+                    </div>
                 </div>
             </section>
             <section id="about" class="card fade-in">
@@ -1116,7 +1179,7 @@
                 <p class="muted">Driven by precision, powered by curiosity. I transform manual testing corridors
                     into
                     automated, repeatable systems so teams have clear feedback and confidence to ship.</p>
-                <p class="margin-top-small">I’ve worked across banking and e-commerce domains building API & UI
+                <p class="muted margin-top-small">I’ve worked across banking and e-commerce domains building API & UI
                     automation, resilient test pipelines, and observability to help teams scale testing without
                     slowing
                     delivery. I enjoy breaking complex flows into simple, testable parts and collaborating
@@ -1129,23 +1192,23 @@
                     <h3>Languages & Core Tech</h3>
                     <div class="icon-stack">
                         <div class="tech-icon" title="Java">
-                            <img class="icon-img" src="images/java.png" alt="Java Icon"/>
+                            <img class="icon-img" src="images/java.png" alt="Java Icon" loading="lazy"/>
                             <span class="label">Java</span>
                         </div>
                         <div class="tech-icon" title="TypeScript">
-                            <img class="icon-img" src="images/typescript.png" alt="TypeScript Icon"/>
+                            <img class="icon-img" src="images/typescript.png" alt="TypeScript Icon" loading="lazy"/>
                             <span class="label">TypeScript</span>
                         </div>
                         <div class="tech-icon" title="SQL (PostgreSQL)">
-                            <img class="icon-img" src="images/sql.png" alt="SQL Icon"/>
+                            <img class="icon-img" src="images/sql.png" alt="SQL Icon" loading="lazy"/>
                             <span class="label">SQL</span>
                         </div>
                         <div class="tech-icon" title="HTML5">
-                            <img class="icon-img" src="images/html.png" alt="HTML Icon"/>
+                            <img class="icon-img" src="images/html.png" alt="HTML Icon" loading="lazy"/>
                             <span class="label">HTML</span>
                         </div>
                         <div class="tech-icon" title="CSS3">
-                            <img class="icon-img" src="images/css.png" alt="CSS Icon"/>
+                            <img class="icon-img" src="images/css.png" alt="CSS Icon" loading="lazy"/>
                             <span class="label">CSS</span>
                         </div>
                     </div>
@@ -1155,35 +1218,35 @@
                     <h3>Test Automation & Frameworks</h3>
                     <div class="icon-stack">
                         <div class="tech-icon" title="Playwright">
-                            <img class="icon-img" src="images/playwright.png" alt="Playwright Icon"/>
+                            <img class="icon-img" src="images/playwright.png" alt="Playwright Icon" loading="lazy"/>
                             <span class="label">Playwright</span>
                         </div>
                         <div class="tech-icon" title="Cypress">
-                            <img class="icon-img" src="images/cypress.png" alt="Cypress Icon"/>
+                            <img class="icon-img" src="images/cypress.png" alt="Cypress Icon" loading="lazy"/>
                             <span class="label">Cypress</span>
                         </div>
                         <div class="tech-icon" title="JUnit">
-                            <img class="icon-img" src="images/junit.png" alt="JUnit Icon"/>
+                            <img class="icon-img" src="images/junit.png" alt="JUnit Icon" loading="lazy"/>
                             <span class="label">JUnit</span>
                         </div>
                         <div class="tech-icon" title="TestNG">
-                            <img class="icon-img" src="images/testng.png" alt="TestNG Icon"/>
+                            <img class="icon-img" src="images/testng.png" alt="TestNG Icon" loading="lazy"/>
                             <span class="label">TestNG</span>
                         </div>
                         <div class="tech-icon" title="Selenium">
-                            <img class="icon-img" src="images/selenium.png" alt="Selenium Icon"/>
+                            <img class="icon-img" src="images/selenium.png" alt="Selenium Icon" loading="lazy"/>
                             <span class="label">Selenium</span>
                         </div>
                         <div class="tech-icon" title="REST Assured">
-                            <img class="icon-img" src="images/restassured.png" alt="REST Assured Icon"/>
+                            <img class="icon-img" src="images/restassured.png" alt="REST Assured Icon" loading="lazy"/>
                             <span class="label">REST Assured</span>
                         </div>
                         <div class="tech-icon" title="Cucumber">
-                            <img class="icon-img" src="images/cucumber.png" alt="Cucumber Icon"/>
+                            <img class="icon-img" src="images/cucumber.png" alt="Cucumber Icon" loading="lazy"/>
                             <span class="label">Cucumber</span>
                         </div>
                         <div class="tech-icon" title="Postman">
-                            <img class="icon-img" src="images/postman.png" alt="Postman Icon"/>
+                            <img class="icon-img" src="images/postman.png" alt="Postman Icon" loading="lazy"/>
                             <span class="label">Postman</span>
                         </div>
                     </div>
@@ -1193,23 +1256,23 @@
                     <h3>CI/CD & DevOps Tools</h3>
                     <div class="icon-stack">
                         <div class="tech-icon" title="Azure DevOps">
-                            <img class="icon-img" src="images/azuredevops.png" alt="Azure DevOps Icon"/>
+                            <img class="icon-img" src="images/azuredevops.png" alt="Azure DevOps Icon" loading="lazy"/>
                             <span class="label">Azure DevOps</span>
                         </div>
                         <div class="tech-icon" title="Jenkins">
-                            <img class="icon-img" src="images/jenkins.png" alt="Jenkins Icon"/>
+                            <img class="icon-img" src="images/jenkins.png" alt="Jenkins Icon" loading="lazy"/>
                             <span class="label">Jenkins</span>
                         </div>
                         <div class="tech-icon" title="Docker">
-                            <img class="icon-img" src="images/docker.png" alt="Docker Icon"/>
+                            <img class="icon-img" src="images/docker.png" alt="Docker Icon" loading="lazy"/>
                             <span class="label">Docker</span>
                         </div>
                         <div class="tech-icon" title="Git">
-                            <img class="icon-img" src="images/git.png" alt="Git Icon"/>
+                            <img class="icon-img" src="images/git.png" alt="Git Icon" loading="lazy"/>
                             <span class="label">Git</span>
                         </div>
                         <div class="tech-icon" title="Maven">
-                            <img class="icon-img" src="images/maven.png" alt="Maven Icon"/>
+                            <img class="icon-img" src="images/maven.png" alt="Maven Icon" loading="lazy"/>
                             <span class="label">Maven</span>
                         </div>
                     </div>
@@ -1218,14 +1281,14 @@
             <section id="experience" class="card fade-in" aria-labelledby="experience-title">
                 <h2 id="experience-title">
                     Professional Experience</h2>
-                <ol class="timeline stagger" style="margin-top:12px">
+                <ol class="timeline stagger">
                     <li class="job">
                         <div class="meta"><strong>June 2023 - September 2025</strong><br>ING Bank</div>
                         <div class="desc">
-                            <div style="font-weight:700">Test Automation Engineer (PSS/True International Payments/Ch Dovetail)
+                            <div class="desc-title">Test Automation Engineer (PSS/True International Payments/Ch Dovetail)
                             </div>
-                            <div class="small muted" style="margin-bottom:4px">Amsterdam/Utrecht, Netherlands</div>
-                            <p class="muted" style="margin:0 0 4px;font-size:14px">
+                            <div class="small muted desc-meta">Amsterdam/Utrecht, Netherlands</div>
+                            <p class="muted desc-text">
                                 Architected and maintained scalable automation test frameworks (Java, Selenium, REST Assured, Cucumber). Led UI, API, and DB testing for critical payment flows (PSS/TIP), reducing regression test time by 90% by integrating execution via Azure Pipelines. Consistently reported defects and collaborated with cross-functional teams to ensure high product quality and reliable releases.
                             </p>
                         </div>
@@ -1233,9 +1296,9 @@
                     <li class="job">
                         <div class="meta"><strong>June 2022 - June 2023</strong><br>TechPro Education</div>
                         <div class="desc">
-                            <div style="font-weight:700">QA Automation Engineer (Part-Time)</div>
-                            <div class="small muted" style="margin-bottom:4px">Remote</div>
-                            <p class="muted" style="margin:0 0 4px;font-size:14px">Developed and managed automation
+                            <div class="desc-title">QA Automation Engineer (Part-Time)</div>
+                            <div class="small muted desc-meta">Remote</div>
+                            <p class="muted desc-text">Developed and managed automation
                                 frameworks for the Medunna Health Project. Integrated test suites with Jenkins for
                                 CI/CD
                                 implementation and executed comprehensive functional and regression tests.</p>
@@ -1245,9 +1308,9 @@
                         <div class="meta"><strong>May 2021 - Jan 2023</strong><br>BSG Auto Parts & Nerex Motors
                         </div>
                         <div class="desc">
-                            <div style="font-weight:700">Manual Tester & e-Commerce Specialist</div>
-                            <div class="small muted" style="margin-bottom:4px">Amsterdam, Netherlands</div>
-                            <p class="muted" style="margin:0 0 4px;font-size:14px">Conducted manual testing for
+                            <div class="desc-title">Manual Tester & e-Commerce Specialist</div>
+                            <div class="small muted desc-meta">Amsterdam, Netherlands</div>
+                            <p class="muted desc-text">Conducted manual testing for
                                 in-house
                                 ERP systems. Improved product search performance and visibility across online sales
                                 channels. Boosted online sales through strategic sponsored ad campaigns.</p>
@@ -1257,9 +1320,9 @@
             </section>
             <section id="projects" class="card fade-in">
                 <h2>Projects & Highlights</h2>
-                <div class="projects" style="margin-top:12px">
-                    <a href="#p1-details" class="project" aria-label="TIP Test Center Framework Project Details">
-                        <div id="p1-details" class="meta">TIP Test Center Framework (ING)</div>
+                <div class="projects">
+                    <a href="#" class="project" aria-label="TIP Test Center Framework Project Details">
+                        <div class="meta">TIP Test Center Framework (ING)</div>
                         <p>Architected and maintained FFV test validations for EPP and non-EPP international payment
                             flows using Java (Spring Boot/Merak) and Selenium/Cucumber. Integrated test execution
                             via
@@ -1271,8 +1334,8 @@
                             Assured · Azure Pipelines · Scrum
                         </div>
                     </a>
-                    <a href="#p2-details" class="project" aria-label="Health System Automation Framework Project Details">
-                        <div id="p2-details" class="meta">Health System Automation Framework (Medunna)</div>
+                    <a href="#" class="project" aria-label="Health System Automation Framework Project Details">
+                        <div class="meta">Health System Automation Framework (Medunna)</div>
                         <p>Developed and managed automation frameworks for the Medunna Health Project. Executed
                             comprehensive functional and regression tests and integrated all test suites with
                             Jenkins
@@ -1281,8 +1344,8 @@
                             Cucumber · Jenkins
                         </div>
                     </a>
-                    <a href="#p3-details" class="project" aria-label="E-commerce Quality and ERP Testing Project Details">
-                        <div id="p3-details" class="meta">E-commerce Quality & ERP Testing</div>
+                    <a href="#" class="project" aria-label="E-commerce Quality and ERP Testing Project Details">
+                        <div class="meta">E-commerce Quality & ERP Testing</div>
                         <p>Conducted detailed manual testing for in-house ERP systems. Focused on quality assurance
                             while improving front-end product search performance and visibility across various
                             high-volume sales platforms.</p>
@@ -1295,14 +1358,14 @@
             <section id="education" class="card fade-in" aria-labelledby="education-title">
                 <h2 id="education-title">
                     Education</h2>
-                <ol class="timeline stagger" style="margin-top:12px">
+                <ol class="timeline stagger">
                     <li class="job">
                         <div class="meta"><strong>June 2022 - June 2023</strong><br>TechPro Education</div>
                         <div class="desc">
-                            <div style="font-weight:700">Bachelor of Engineering - Full-Stack Automation Engineering
+                            <div class="desc-title">Bachelor of Engineering - Full-Stack Automation Engineering
                             </div>
-                            <div class="small muted" style="margin-bottom:4px">Online/Remote</div>
-                            <p class="muted" style="margin:4px 0 4px;font-size:14px">
+                            <div class="small muted desc-meta">Online/Remote</div>
+                            <p class="muted desc-skills">
                                 <strong>Key Skills Developed:</strong> Test Automation (Selenium WebDriver, Cypress,
                                 Postman API, REST APIs, RESTful WebServices), CI/CD (Jenkins), Frameworks (Hybrid
                                 Framework, Cucumber/BDD), Languages/Tools (Java, Gherkin, SQL, Maven, TestNG,
@@ -1314,9 +1377,9 @@
                     <li class="job">
                         <div class="meta"><strong>September 2019 - April 2020</strong><br>ROC van Twente</div>
                         <div class="desc">
-                            <div style="font-weight:700">Software Developer</div>
-                            <div class="small muted" style="margin-bottom:4px">Enschede, Netherlands</div>
-                            <p class="muted" style="margin:4px 0 4px;font-size:14px">
+                            <div class="desc-title">Software Developer</div>
+                            <div class="small muted desc-meta">Enschede, Netherlands</div>
+                            <p class="muted desc-skills">
                                 <strong>Key Skills Developed:</strong> Core Programming (C#, JavaScript), Database
                                 Management (SQL, T-SQL, MongoDB), Version Control (Git, GitHub), Web Fundamentals
                                 (HTML,
@@ -1327,9 +1390,9 @@
                     <li class="job">
                         <div class="meta"><strong>October 2017 - March 2018</strong><br>HackYourFuture</div>
                         <div class="desc">
-                            <div style="font-weight:700">Full-Stack Web Development</div>
-                            <div class="small muted" style="margin-bottom:4px">Amsterdam, Netherlands</div>
-                            <p class="muted" style="margin:4px 0 4px;font-size:14px">
+                            <div class="desc-title">Full-Stack Web Development</div>
+                            <div class="small muted desc-meta">Amsterdam, Netherlands</div>
+                            <p class="muted desc-skills">
                                 <strong>Key Skills Developed:</strong> Web Technologies (HTML, CSS, JavaScript), API
                                 Testing, Version Control (Git, GitHub), C#, SQL, and Object-Oriented Programming
                                 (OOP).
@@ -1339,9 +1402,9 @@
                     <li class="job">
                         <div class="meta"><strong>September 2007 - July 2013</strong><br>Istanbul University</div>
                         <div class="desc">
-                            <div style="font-weight:700">Bachelor of Applied Science - Mathematics</div>
-                            <div class="small muted" style="margin-bottom:4px">Istanbul, Turkey</div>
-                            <p class="muted" style="margin:4px 0 4px;font-size:14px">
+                            <div class="desc-title">Bachelor of Applied Science - Mathematics</div>
+                            <div class="small muted desc-meta">Istanbul, Turkey</div>
+                            <p class="muted desc-skills">
                                 <strong>Relevant Coursework and Skills:</strong> Differential Equations, Complex
                                 Analysis, Probability & Statistics, Advanced Calculus, General Physics, and skills
                                 in
@@ -1354,7 +1417,7 @@
             <section id="certs" class="card fade-in" aria-labelledby="certs-title">
                 <h2 id="certs-title">
                     Certifications</h2>
-                <div class="certs stagger" style="margin-top:10px">
+                <div class="certs stagger">
                     <div class="cert">ISTQB® Certified Test Automation Engineer (SDET)</div>
                     <div class="cert">A4Q Certified Selenium Tester Foundation</div>
                     <div class="cert">Playwright Essential Training</div>
@@ -1369,38 +1432,38 @@
             </section>
             <section id="testimonials" class="card fade-in" aria-labelledby="testimonials-title">
                 <h2 id="testimonials-title">Testimonials</h2>
-                <div
-                        style="padding:14px 14px 18px 14px; margin-bottom: 12px; border-radius:var(--radius); background: linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));">
-                    <h3 style="margin:0 0 10px; font-size:16px; font-weight:700; color:var(--text-color);">ING Team Farewell
-                        Card</h3>
+                <div class="testimonials-group">
+                    <h3>ING Team Farewell Card</h3>
                     <img src="images/ING_Colleagues.png"
                          alt="A combined image of two farewell cards from ING colleagues, featuring handwritten messages and signatures."
                          loading="lazy"
-                         style="width:100%; height:auto; display:block; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04);"/>
-                    <div class="small muted" style="margin-top:8px; text-align:center;">Heartfelt messages
+                    />
+                    <div class="small muted">Heartfelt messages
                         reflecting my
                         contributions to the International Payments team.
                     </div>
                 </div>
-                <div class="testimonials stagger" style="margin-top:10px">
+                <div class="testimonials stagger">
                     <div class="quote">"Emre increased our test reliability and made regression runs predictable — a
                         huge help to the delivery cycle."
-                        <div class="small muted" style="margin-top:8px">— Colleague at ING</div>
+                        <div class="small muted">— Colleague at ING</div>
                     </div>
                     <div class="quote">"Practical, reliable, and clear. Brought automation to parts of the product
                         we
                         thought were hard to cover."
-                        <div class="small muted" style="margin-top:8px">— BA</div>
+                        <div class="small muted">— BA</div>
                     </div>
                 </div>
             </section>
             <footer>© 2025 Emre Dursun • Built with precision & curiosity.</footer>
         </div>
-        <aside class="profile card" aria-label="Profile card">
+        <aside id="profile-card" class="profile card" aria-label="Profile card">
             <div class="photo" role="img" aria-label="Emre Dursun headshot">
                 <img src="https://media.licdn.com/dms/image/v2/D4D03AQHlu0evgEIp-A/profile-displayphoto-scale_200_200/B4DZhYUPh9HwAY-/0/1753828359776?e=1763596800&v=beta&t=Q7gf4fZrUPst920vFbjsybkOaIWk2TSXGzFMvbPomK0"
                      alt="Emre Dursun headshot"
-                     loading="lazy"/>
+                     loading="lazy"
+                     decoding="async"
+                />
             </div>
 
             <div class="social-icons-row">
@@ -1439,12 +1502,14 @@
                     <a href="mailto:info.emredursun@gmail.com">info.emredursun@gmail.com</a>
                 </div>
             </div>
-            <div class="button-group"><a class="btn ghost" href="#experience">Resume</a><a
-                    class="btn ghost" href="/CV.pdf" target="_blank">Download CV</a></div>
+            <div class="button-group">
+                <a class="btn ghost" href="#experience">Resume</a>
+                <a class="btn ghost" href="/CV.pdf" target="_blank" rel="noopener noreferrer" download="Emre_Dursun_CV.pdf">Download CV</a>
+            </div>
             <hr class="separator">
             <div id="contact">
-                <h2 style="margin:0 0 8px; color: var(--text-color);">Let's Connect</h2>
-                <p class="muted" style="margin:0 0 10px">Open to new roles, contract work, and collaborations in
+                <h2 class="contact-header">Let's Connect</h2>
+                <p class="muted contact-intro">Open to new roles, contract work, and collaborations in
                     automation, QA strategy, and test engineering.</p>
                 <form id="contactForm"
                       class="contact"
@@ -1457,68 +1522,63 @@
                                                  required aria-label="Your email"/></div>
                     <div><textarea id="message" name="message" rows="4" placeholder="Short message" required
                                    aria-label="Message"></textarea></div>
-                    <div style="display:flex;gap:8px">
+                    <div class="form-actions">
                         <button type="submit" class="btn primary">Send message</button>
                         <a class="btn ghost"
                            href="mailto:info.emredursun@gmail.com?subject=Contact%20from%20Website&body=Hi%20Emre%2C%0A%0A"
-                           target="_blank">Email</a>
+                           target="_blank" rel="noopener noreferrer">Email</a>
                     </div>
-                    <div id="formResult" class="small muted" style="margin-top:8px"></div>
+                    <div id="formResult" class="small muted form-result" aria-live="polite"></div>
                 </form>
             </div>
         </aside>
     </main>
 </div>
 <script>
-    // Mobile menu toggle and state management
     const menuBtn = document.getElementById("menuBtn");
     const nav = document.querySelector("nav");
+    const navLinks = document.querySelectorAll('nav a');
+    const mobileBreakpoint = 1000;
+
+    const toggleMenu = (open) => {
+        const newState = open === undefined ? menuBtn.getAttribute("aria-expanded") !== "true" : open;
+        menuBtn.setAttribute("aria-expanded", newState);
+        nav.classList.toggle("mobile-menu--active", newState);
+    };
 
     if (menuBtn && nav) {
-        menuBtn.addEventListener("click", () => {
-            const isExpanded = menuBtn.getAttribute("aria-expanded") === "true";
-            const newState = !isExpanded;
-            menuBtn.setAttribute("aria-expanded", newState);
-            // BETTER: Toggle a CSS class instead of manipulating style.display
-            nav.classList.toggle("mobile-menu--active", newState);
-        });
+        menuBtn.addEventListener("click", () => toggleMenu());
 
-        // Close mobile menu when a navigation link is clicked
-        document.querySelectorAll('nav a').forEach(link => {
+        navLinks.forEach(link => {
             link.addEventListener('click', () => {
-                // Check if the screen width indicates a mobile view (based on CSS breakpoint of 820px)
-                if (window.innerWidth <= 820) {
-                    // Check if the menu is open (using the new class)
-                    if (nav.classList.contains('mobile-menu--active')) {
-                        // Simulate a click on the menu button to toggle/close the menu
-                        menuBtn.click();
-                    }
+                if (window.innerWidth <= mobileBreakpoint && nav.classList.contains('mobile-menu--active')) {
+                    toggleMenu(false);
                 }
             });
         });
     }
 
-    // Form submission handling with UX improvement
     const form = document.getElementById('contactForm');
     const formResult = document.getElementById('formResult');
     const submitButton = form ? form.querySelector('button[type="submit"]') : null;
+    const formSpreeAction = "https://formspree.io/f/YOUR_FORMSPREE_HASH";
 
-    if (form && formResult && submitButton) {
+    if (form && formResult && submitButton && form.action === formSpreeAction) {
+        formResult.setAttribute('aria-live', 'polite');
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const data = new FormData(e.target);
 
-            // UX FIX: Disable the button during submission
             submitButton.disabled = true;
             submitButton.textContent = 'Sending...';
 
             formResult.textContent = 'Sending...';
-            formResult.style.color = '#06b6d4'; // Use accent color for status
+            formResult.style.color = '#06b6d4';
 
             try {
-                // NOTE: The Formspree hash (YOUR_FORMSPREE_HASH) must be configured in production.
-                const response = await fetch(e.target.action, {
-                    method: form.method,
+                const response = await fetch(formSpreeAction, {
+                    method: 'POST',
                     body: data,
                     headers: {
                         'Accept': 'application/json'
@@ -1527,66 +1587,53 @@
 
                 if (response.ok) {
                     formResult.textContent = 'Thank you! Your message has been sent.';
-                    formResult.style.color = '#10b981'; // Green for success
+                    formResult.style.color = '#10b981';
                     form.reset();
                 } else {
-                    formResult.textContent = 'Oops! There was an error sending your message. Please use the direct email link.';
-                    formResult.style.color = '#ef4444'; // Red for error
+                    const errorData = await response.json();
+                    let errorMessage = errorData.error || 'Oops! There was an error sending your message. Please use the direct email link.';
+                    formResult.textContent = errorMessage;
+                    formResult.style.color = '#ef4444';
                 }
             } catch (error) {
+                console.error('Network or Fetch Error:', error);
                 formResult.textContent = 'Oops! A network error occurred. Please use the direct email link.';
-                formResult.style.color = '#ef4444'; // Red for error
+                formResult.style.color = '#ef4444';
             } finally {
-                // UX FIX: Re-enable the button and reset text
                 submitButton.disabled = false;
                 submitButton.textContent = 'Send message';
             }
         });
     }
 
-    /* Complete theme toggle logic with localStorage and icon change */
     document.addEventListener('DOMContentLoaded', () => {
         const toggleButton = document.getElementById('theme-toggle');
         const body = document.body;
         const icon = toggleButton.querySelector('i');
         const themeKey = 'portfolio-theme';
 
-        // Function to apply the theme class and icon
-        function applyTheme(theme) {
-            if (theme === 'light-mode') {
-                body.classList.add('light-mode');
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon'); // Show moon icon when in light mode (to switch to dark)
-            } else {
-                body.classList.remove('light-mode');
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun'); // Show sun icon when in dark mode (to switch to light)
-            }
-        }
+        if (!toggleButton || !icon) return;
 
-        // 1. Check for saved preference on load
+        const applyTheme = (theme) => {
+            const isLight = theme === 'light-mode';
+            body.classList.toggle('light-mode', isLight);
+
+            icon.classList.toggle('fa-sun', !isLight);
+            icon.classList.toggle('fa-moon', isLight);
+        };
+
         const savedTheme = localStorage.getItem(themeKey);
 
-        if (savedTheme) {
-            applyTheme(savedTheme);
-        } else {
-            // Default to dark mode if no preference is saved (since the site is dark by default)
-            applyTheme('dark-mode');
-        }
+        const initialTheme = savedTheme || 'dark-mode';
+        applyTheme(initialTheme);
 
-        // 2. Add click listener to toggle theme
+
         toggleButton.addEventListener('click', () => {
             const isLight = body.classList.contains('light-mode');
+            const newTheme = isLight ? 'dark-mode' : 'light-mode';
 
-            if (isLight) {
-                // Currently light, switch to Dark Mode
-                applyTheme('dark-mode');
-                localStorage.setItem(themeKey, 'dark-mode');
-            } else {
-                // Currently dark, switch to Light Mode
-                applyTheme('light-mode');
-                localStorage.setItem(themeKey, 'light-mode');
-            }
+            applyTheme(newTheme);
+            localStorage.setItem(themeKey, newTheme);
         });
     });
 </script>
